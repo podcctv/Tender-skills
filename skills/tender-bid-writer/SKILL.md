@@ -1,13 +1,13 @@
 ---
 name: tender-bid-writer
-description: End-to-end tender and bid proposal workflow for Chinese government, enterprise, and integration projects. Use when Codex/OpenClaw/Hermes needs to analyze bidding documents, extract scoring criteria, qualification requirements, technical specifications, and business clauses; build a MECE proposal outline and chapter briefs; draft technical or service proposal chapters; merge and quality-check HTML/Markdown/DOCX outputs; simulate multi-expert bid review; iterate revisions; and prepare final delivery checklists for tender submissions.
+description: End-to-end tender and bid proposal workflow for Chinese government, enterprise, and integration projects. Use when Codex/OpenClaw/Hermes needs to analyze bidding documents, extract scoring criteria, qualification requirements, technical specifications, and business clauses; build a MECE proposal outline and chapter briefs; draft thick, evaluator-ready, low-AI-flavor technical or service proposal chapters; merge and quality-check HTML/Markdown/DOCX outputs; simulate multi-expert bid review; iterate revisions; and prepare final delivery checklists for tender submissions.
 ---
 
 # Tender Bid Writer
 
 ## Operating Rule
 
-Treat the tender document as the source of truth. Do not invent qualifications, certifications, past projects, prices, delivery dates, or manufacturer commitments. Mark unknowns as `待确认` and ask for evidence when a claim affects compliance or scoring.
+Treat the tender document as the source of truth. Do not invent qualifications, certifications, past projects, prices, delivery dates, or manufacturer commitments. In internal ledgers and review notes, mark unknowns as `待确认` and ask for evidence when a claim affects compliance or scoring. In formal proposal chapters, never leave draft placeholders or internal notes; cite other formal chapters or attachments for unprovided evidence instead of fabricating it.
 
 ## Workflow
 
@@ -36,7 +36,8 @@ Treat the tender document as the source of truth. Do not invent qualifications, 
 4. **Draft chapters**
    - Draft one chapter at a time from the approved brief.
    - Prefer HTML for long technical方案 chapters that need SVG architecture diagrams, flowcharts, tables, and later DOCX conversion.
-   - After each chapter, run a local self-check: requirement coverage, forbidden placeholders, evidence gaps, consistency with prior chapters, and evaluator readability.
+   - For high-budget, complex, or highly competitive projects, draft chapters as thick proposal text rather than short generic summaries: combine正文,专项措施,表格化管理工具,交付记录, and验收支撑材料.
+   - After each chapter, run a local self-check: requirement coverage, forbidden placeholders, evidence gaps, consistency with prior chapters, evaluator readability, low-AI-flavor detail, and验收可追溯性.
 
 5. **Merge and quality check**
    - Merge chapters only after chapter-level checks pass.
@@ -59,6 +60,24 @@ Treat the tender document as the source of truth. Do not invent qualifications, 
 - Read `references/platform-compatibility.md` when installing or adapting this skill for Codex, OpenClaw, or Hermes.
 - Use `scripts/bid_quality_check.py` for local proposal checks when draft files exist.
 
+## Thick Proposal Drafting Rules
+
+Use these rules whenever drafting formal bid chapters, especially for projects above RMB 30 million, multi-system platform projects, or scoring language such as `完全满足且优于项目需求`.
+
+- Map the tender source into the正文. Connect scoring items, procurement needs, technical parameters, business clauses, deliverables, and acceptance requirements to specific response content. Avoid abstract promises such as "建立机制" or "加强管理" unless the text states how the mechanism runs, who is responsible, when it is executed, what records are formed, and how those records support acceptance.
+- Match length and density to project complexity. Do not leave major chapters at a 5,000-10,000 character overview level when the full bid target is a thick technical volume. Expand with专项控制内容,流程细则,检查表,台账模板,风险预防措施,阶段门禁,交付记录, and验收映射表.
+- Reduce AI flavor. Avoid repeated slogan-like symmetric phrases such as "全过程、全链路、全角色、全闭环". Use concrete project scenes, business objects, data flows, interface joint debugging, role collaboration, quality records, issue handling, acceptance materials, and procurement-side coordination details.
+- Prefer the structure `机制 + 场景 + 表单 + 输出成果`:
+  - 机制: explain the management method and responsible role.
+  - 场景: explain how it applies to this project's business or technical boundary.
+  - 表单: identify the ledger, checklist, meeting minutes, test record, migration record, or acceptance mapping used to freeze the process.
+  - 输出成果: state the material that supports evaluation, implementation, delivery, and acceptance.
+- For platform software projects, write project-specific专项方案 instead of generic software engineering. Cover relevant boundaries such as生产服务平台,流通服务平台,交易服务平台,数据中台,AI能力中心,电子合同,质量追溯,接口联调,数据迁移,主数据管理,业务连续性,演示功能. For each专项, state quality risks, control focus, inspection method, and output results.
+- Make tables evaluative, not decorative. Use tables only when they support scoring or implementation control, such as质量指标表,阶段门禁表,岗位职责表,问题分级表,接口联调检查表,数据质量检查表,风险预防表,交付文档清单,验收映射表. Each table should help prove `完全满足且优于项目需求`.
+- For scoring chapters, first read the target score and scoring language. When the evaluator expects `优于`, provide evidence through finer process control, fuller risk prevention, clearer acceptance linkage, and stronger专项措施 rather than restating the tender text.
+- For common chapters such as质量管理,组织实施,验收交付, and运维服务, adapt them to the project. For example, a quality management chapter should include quality goals, indicators, responsibilities, issue handling, evaluation, rectification, incentives/penalties, lifecycle quality gates, platform-specific quality controls, data middle-platform quality controls, interface joint-debugging controls, data quality controls, trial-run controls, quality meetings, process forms, risk prevention, document consistency controls, purchaser collaboration, and acceptance tracking.
+- Do not leave formal-chapter draft traces: `本章自查`, `待确认`, `TODO`, `公司名称`, `项目名称：填写`, `如有证据再补`, or similar wording. For unavailable personnel, certificates, performance cases, software copyrights, authorizations, or manufacturer evidence, reference formal bid sections or attachments, such as `详见本投标文件《项目组织实施方案》及《本项目管理人员及服务人员名单》`.
+
 ## Output Standards
 
 - Keep every key claim traceable to tender text, user-provided company evidence, or a clear assumption.
@@ -66,6 +85,18 @@ Treat the tender document as the source of truth. Do not invent qualifications, 
 - Use concise, evaluable language. Prefer "满足/优于/响应/提供" statements tied to measurable tender clauses.
 - Flag `否决项`, missing evidence, impossible deadlines, contradictory clauses, and formatting constraints before polishing prose.
 - Do not fabricate screenshots, certificates, project cases, authorized letters, seal/signature status, or third-party commitments.
+
+## Chapter-Level Review
+
+After each formal chapter, review and revise before moving on:
+
+- Verify coverage of the matching scoring items, mandatory clauses, procurement requirements, technical parameters, business clauses, deliverables, and acceptance requirements.
+- Identify unsupported claims and either remove them, tie them to evidence, or reference the formal attachment/chapter where evidence is provided.
+- Remove draft traces, placeholders, internal review wording, and fabricated evidence.
+- Check that the chapter fits this project rather than a generic template, including business scenes, platform boundaries, data/interface/control details, and purchaser collaboration.
+- Confirm every major commitment has a verifiable output: ledger, checklist, meeting minutes, test report, trial-run record, migration record, issue record, acceptance mapping, or delivery document.
+- Check consistency with other chapters for scope, schedule, roles, deliverables, service commitments, and acceptance criteria.
+- Judge whether the length and density match the project amount, complexity, scoring competitiveness, and target thickness of the full bid.
 
 ## Typical User Prompts
 

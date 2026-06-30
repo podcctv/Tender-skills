@@ -1,4 +1,4 @@
 interface:
   display_name: "投标方案编制"
-  short_description: "从招标文件提取需求、生成技术方案、质检评审并交付投标文档"
+  short_description: "从招标文件提取需求，生成厚标书正文，降 AI 味并完成质检评审"
   default_prompt: "Use $tender-bid-writer to extract requirements from a tender package, draft the bid technical proposal, run QC, and prepare the delivery checklist."
