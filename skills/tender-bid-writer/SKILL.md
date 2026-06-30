@@ -31,6 +31,7 @@ Treat the tender document as the source of truth. Do not invent qualifications, 
 3. **Outline and chapter briefs**
    - Build a MECE outline that maps every scored and mandatory requirement to exactly one primary response location.
    - Write a brief for every chapter before drafting: chapter goal, source requirements, claims allowed, evidence needed, diagrams/tables, and acceptance checks.
+   - Create an overall page budget before drafting. Unless the tender document imposes a strict page limit, estimate the full proposal thickness by project value and complexity, using about 1 proposal page per RMB 10,000 as the practical planning baseline and keeping substantial bids no lower than roughly 300-500 pages.
    - Ask for human confirmation before full drafting when the outline controls compliance or a large document.
 
 4. **Draft chapters**
@@ -66,12 +67,14 @@ Use these rules whenever drafting formal bid chapters, especially for projects a
 
 - Map the tender source into the正文. Connect scoring items, procurement needs, technical parameters, business clauses, deliverables, and acceptance requirements to specific response content. Avoid abstract promises such as "建立机制" or "加强管理" unless the text states how the mechanism runs, who is responsible, when it is executed, what records are formed, and how those records support acceptance.
 - Match length and density to project complexity. Do not leave major chapters at a 5,000-10,000 character overview level when the full bid target is a thick technical volume. Expand with专项控制内容,流程细则,检查表,台账模板,风险预防措施,阶段门禁,交付记录, and验收映射表.
+- Plan the full proposal by page count, not only by section list. If the tender has no hard page cap, use `RMB 10,000 contract value ≈ 1 proposal page` as the baseline, then adjust upward for complex systems, many scoring items, integration difficulty, data migration, demonstrations, or heavy acceptance obligations. For substantial projects, the technical/business proposal should generally not fall below 300-500 pages; prefer greater detail when it improves evaluability, traceability, and acceptance support.
 - Reduce AI flavor. Avoid repeated slogan-like symmetric phrases such as "全过程、全链路、全角色、全闭环". Use concrete project scenes, business objects, data flows, interface joint debugging, role collaboration, quality records, issue handling, acceptance materials, and procurement-side coordination details.
 - Prefer the structure `机制 + 场景 + 表单 + 输出成果`:
   - 机制: explain the management method and responsible role.
   - 场景: explain how it applies to this project's business or technical boundary.
   - 表单: identify the ledger, checklist, meeting minutes, test record, migration record, or acceptance mapping used to freeze the process.
   - 输出成果: state the material that supports evaluation, implementation, delivery, and acceptance.
+- For project-understanding chapters, avoid broad policy boilerplate. Build a thick, evaluator-ready narrative from `政策背景 -> 采购人定位 -> 项目建设目标 -> 业务现状理解 -> 信息化现状判断 -> 痛点归纳 -> 建设必要性 -> 价值链/业务链分析 -> response strategy`. Use tender language first, then carefully infer business implications; do not invent purchaser internal data.
 - For platform software projects, write project-specific专项方案 instead of generic software engineering. Cover relevant boundaries such as生产服务平台,流通服务平台,交易服务平台,数据中台,AI能力中心,电子合同,质量追溯,接口联调,数据迁移,主数据管理,业务连续性,演示功能. For each专项, state quality risks, control focus, inspection method, and output results.
 - Make tables evaluative, not decorative. Use tables only when they support scoring or implementation control, such as质量指标表,阶段门禁表,岗位职责表,问题分级表,接口联调检查表,数据质量检查表,风险预防表,交付文档清单,验收映射表. Each table should help prove `完全满足且优于项目需求`.
 - For scoring chapters, first read the target score and scoring language. When the evaluator expects `优于`, provide evidence through finer process control, fuller risk prevention, clearer acceptance linkage, and stronger专项措施 rather than restating the tender text.
@@ -96,7 +99,7 @@ After each formal chapter, review and revise before moving on:
 - Check that the chapter fits this project rather than a generic template, including business scenes, platform boundaries, data/interface/control details, and purchaser collaboration.
 - Confirm every major commitment has a verifiable output: ledger, checklist, meeting minutes, test report, trial-run record, migration record, issue record, acceptance mapping, or delivery document.
 - Check consistency with other chapters for scope, schedule, roles, deliverables, service commitments, and acceptance criteria.
-- Judge whether the length and density match the project amount, complexity, scoring competitiveness, and target thickness of the full bid.
+- Judge whether the length and density match the project amount, complexity, scoring competitiveness, page-budget baseline, and target thickness of the full bid.
 
 ## Typical User Prompts
 
