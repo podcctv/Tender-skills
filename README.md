@@ -27,6 +27,13 @@ skills/
 - `references/platform-compatibility.md`：Codex、OpenClaw、Hermes 适配说明。
 - `scripts/bid_quality_check.py`：可选的本地质检脚本。
 
+## GitHub 同步约定
+
+- 远端仓库统一使用 `https://github.com/podcctv/Tender-skills.git`。
+- 工作分支统一使用 ASCII 名称，默认使用 `codex/tender-skills`。
+- 不要使用中文、空格或不可见字符作为分支名，避免 GitHub 出现 hidden character warning 或 head ref 转义提示。
+- 后续提交、推送和 PR 都应基于 `codex/tender-skills` 分支进行，除非维护者明确指定其他 ASCII 分支名。
+
 ## 适用场景
 
 使用这个 skill 处理以下任务：
