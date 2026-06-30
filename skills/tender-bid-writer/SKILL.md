@@ -24,13 +24,14 @@ Treat the tender document as the source of truth. Do not invent qualifications, 
 
 2. **Requirement extraction**
    - Extract four requirement ledgers before drafting: scoring criteria, qualification requirements, technical specifications, and business clauses.
+   - Decompose procurement requirements into three levels before outlining: Level 1 requirement domain or system boundary, Level 2 function/service/work item, and Level 3 minimum response unit with acceptance point, evidence, and primary proposal location.
    - Preserve exact source anchors where possible: file name, page, section, table row, or clause number.
    - Classify each requirement as `mandatory`, `scored`, `contractual`, `format`, or `evidence`.
    - Stop and report conflicts, missing annexes, unreadable scans, ambiguous scoring language, or hard pass/fail risks.
 
 3. **Outline and chapter briefs**
    - Build a MECE outline that maps every scored and mandatory requirement to exactly one primary response location.
-   - Write a brief for every chapter before drafting: chapter goal, source requirements, claims allowed, evidence needed, diagrams/tables, and acceptance checks.
+   - Write a brief for every chapter before drafting: chapter goal, source requirements, three-level procurement-demand mapping, claims allowed, evidence needed, diagrams/tables, and acceptance checks.
    - Create an overall page budget before drafting. Unless the tender document imposes a strict page limit, estimate the full proposal thickness by project value and complexity, using about 1 proposal page per RMB 10,000 as the practical planning baseline and keeping substantial bids no lower than roughly 300-500 pages.
    - Ask for human confirmation before full drafting when the outline controls compliance or a large document.
 
@@ -38,6 +39,7 @@ Treat the tender document as the source of truth. Do not invent qualifications, 
    - Draft one chapter at a time from the approved brief.
    - Prefer HTML for long technical方案 chapters that need SVG architecture diagrams, flowcharts, tables, and later DOCX conversion.
    - For high-budget, complex, or highly competitive projects, draft chapters as thick proposal text rather than short generic summaries: combine正文,专项措施,表格化管理工具,交付记录, and验收支撑材料.
+   - For every minimum-level section or subsection that responds to a Level 3 procurement requirement, write at least 3-5 substantive正文 paragraphs unless the tender response form forces a shorter answer. Paragraphs should cover mechanism, project scenario, execution details, records/forms, risks, and acceptance outputs, not repeat the heading in different words.
    - After each chapter, run a local self-check: requirement coverage, forbidden placeholders, evidence gaps, consistency with prior chapters, evaluator readability, low-AI-flavor detail, and验收可追溯性.
 
 5. **Merge and quality check**
@@ -66,7 +68,9 @@ Treat the tender document as the source of truth. Do not invent qualifications, 
 Use these rules whenever drafting formal bid chapters, especially for projects above RMB 30 million, multi-system platform projects, or scoring language such as `完全满足且优于项目需求`.
 
 - Map the tender source into the正文. Connect scoring items, procurement needs, technical parameters, business clauses, deliverables, and acceptance requirements to specific response content. Avoid abstract promises such as "建立机制" or "加强管理" unless the text states how the mechanism runs, who is responsible, when it is executed, what records are formed, and how those records support acceptance.
+- Break procurement-demand content into a stable three-level hierarchy. Level 1 should identify the requirement domain, platform, service area, or management theme; Level 2 should identify the concrete function, service task, control object, or deliverable group; Level 3 should identify the smallest response unit that can be written, checked, evidenced, and accepted. Use Level 3 items as the minimum units for正文 drafting, tables, and acceptance mapping.
 - Match length and density to project complexity. Do not leave major chapters at a 5,000-10,000 character overview level when the full bid target is a thick technical volume. Expand with专项控制内容,流程细则,检查表,台账模板,风险预防措施,阶段门禁,交付记录, and验收映射表.
+- Keep minimum sections substantial. Each smallest formal正文 section should normally contain at least 3-5 paragraphs with real content; use fewer only for fixed forms, compliance statements, or tender-mandated short responses. Do not use a single paragraph or a thin table as a substitute for a response that evaluators must score.
 - Plan the full proposal by page count, not only by section list. If the tender has no hard page cap, use `RMB 10,000 contract value ≈ 1 proposal page` as the baseline, then adjust upward for complex systems, many scoring items, integration difficulty, data migration, demonstrations, or heavy acceptance obligations. For substantial projects, the technical/business proposal should generally not fall below 300-500 pages; prefer greater detail when it improves evaluability, traceability, and acceptance support.
 - Reduce AI flavor. Avoid repeated slogan-like symmetric phrases such as "全过程、全链路、全角色、全闭环". Use concrete project scenes, business objects, data flows, interface joint debugging, role collaboration, quality records, issue handling, acceptance materials, and procurement-side coordination details.
 - Prefer the structure `机制 + 场景 + 表单 + 输出成果`:
@@ -94,9 +98,11 @@ Use these rules whenever drafting formal bid chapters, especially for projects a
 After each formal chapter, review and revise before moving on:
 
 - Verify coverage of the matching scoring items, mandatory clauses, procurement requirements, technical parameters, business clauses, deliverables, and acceptance requirements.
+- Verify procurement requirements are decomposed to three levels and every Level 3 item has a primary response location, evidence/record expectation, and acceptance linkage.
 - Identify unsupported claims and either remove them, tie them to evidence, or reference the formal attachment/chapter where evidence is provided.
 - Remove draft traces, placeholders, internal review wording, and fabricated evidence.
 - Check that the chapter fits this project rather than a generic template, including business scenes, platform boundaries, data/interface/control details, and purchaser collaboration.
+- Check that each minimum-level formal正文 section has at least 3-5 substantive paragraphs unless a tender form or fixed response table justifies shorter treatment.
 - Confirm every major commitment has a verifiable output: ledger, checklist, meeting minutes, test report, trial-run record, migration record, issue record, acceptance mapping, or delivery document.
 - Check consistency with other chapters for scope, schedule, roles, deliverables, service commitments, and acceptance criteria.
 - Judge whether the length and density match the project amount, complexity, scoring competitiveness, page-budget baseline, and target thickness of the full bid.
