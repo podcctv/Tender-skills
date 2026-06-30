@@ -2,7 +2,7 @@
 
 面向投标/售前方案编制的可移植 AI skill。核心 skill 名称为 `tender-bid-writer`，用于让 Codex、OpenClaw、Hermes 等 agent 从招标文件中抽取需求、生成投标方案框架、编写章节、合稿质检、模拟专家评审并输出交付清单。
 
-本仓库参考《投标skill 2.0实战图解》的实践流程，将“需求抽取 -> 章节 brief -> 人工确认 -> 逐章编写 -> 合稿 -> 质检 -> 多专家评审 -> 多轮修订 -> 最终交付”固化为一个可复用的 skill。
+流程将“需求抽取 -> 章节 brief -> 人工确认 -> 逐章编写 -> 合稿 -> 质检 -> 多专家评审 -> 多轮修订 -> 最终交付”固化为一个可复用的 skill。
 
 ## 仓库结构
 
@@ -39,6 +39,14 @@ skills/
 - 模拟合规、技术、评分、交付、商务/法务等多专家评审。
 
 ## 安装到 Codex
+
+### 自然语言安装
+
+可以直接把下面这句话发给支持读写本地文件的 agent：
+
+```text
+请从 https://github.com/podcctv/Tender-skills 获取投标 skill，并将 skills/tender-bid-writer 安装到当前工具可发现的 skills 目录中；安装后用 $tender-bid-writer 作为调用名称。
+```
 
 ### 方式一：放入 Codex skills 目录
 
