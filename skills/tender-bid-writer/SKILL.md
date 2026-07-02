@@ -1,6 +1,6 @@
 ---
 name: tender-bid-writer
-description: End-to-end tender and bid proposal workflow for Chinese government, enterprise, and integration projects. Use when Codex/OpenClaw/Hermes needs to analyze bidding documents; classify the bid as goods-mode, software-platform-mode, hybrid-goods-software-mode, or service-mode; extract scoring criteria, qualification requirements, technical specifications, and business clauses; build a MECE proposal outline and chapter briefs; draft evaluator-ready, low-AI-flavor bid chapters with mode-appropriate thickness; merge and quality-check HTML/Markdown/DOCX outputs; simulate multi-expert bid review; iterate revisions; and prepare final delivery checklists for tender submissions.
+description: End-to-end tender and bid proposal workflow for Chinese government, enterprise, and integration projects. Use when Codex/OpenClaw/Hermes needs to analyze bidding documents; handle outsourced/commissioned bid-writing intake; classify the bid as goods-mode, software-platform-mode, hybrid-goods-software-mode, or service-mode; extract scoring criteria, qualification requirements, technical specifications, and business clauses; build a MECE proposal outline and chapter briefs; draft evaluator-ready, low-AI-flavor bid chapters with mode-appropriate thickness; merge and quality-check HTML/Markdown/DOCX outputs; simulate multi-expert bid review; iterate revisions; and prepare final delivery checklists for tender submissions.
 ---
 
 # Tender Bid Writer
@@ -14,6 +14,7 @@ Treat the tender document as the source of truth. Do not invent qualifications, 
 1. **Intake and workspace setup**
    - Locate tender files, annexes, drawings, templates, clarification notices, and mandatory response forms.
    - Identify the procurement object, project value, procurement method, scoring method, required response forms, hard page/format limits, and evidence attachments before drafting.
+   - If the task is an outsourced/commissioned bid-writing job, or the user has only received the tender package without bidder evidence materials, enter the outsourced pre-audit workflow before drafting.
    - Create a working structure if none exists:
      - `00_source/` original tender files and extracted text
      - `01_requirements/` scoring, qualifications, technical parameters, business clauses, deliverables, forms
@@ -22,6 +23,7 @@ Treat the tender document as the source of truth. Do not invent qualifications, 
      - `04_merge/` merged proposal
      - `05_qc/` quality checks and review records
      - `06_delivery/` final DOCX/PDF/HTML and delivery checklist
+     - `07_client_feedback/` outsourced pre-audit reports, material request lists, client-facing questions, and evidence-receipt tracking
 
 2. **Bid type mode classification**
    - Before extracting requirements or outlining, classify the bid into exactly one primary mode: `goods-mode`, `software-platform-mode`, `hybrid-goods-software-mode`, or `service-mode`.
@@ -29,7 +31,20 @@ Treat the tender document as the source of truth. Do not invent qualifications, 
    - If the project includes both product supply and non-trivial software/platform/service implementation, default to `hybrid-goods-software-mode` and split the response into tracks instead of mixing product parameters with platform方案.
    - Let the selected mode control requirement extraction, evidence matrices, outline structure, page budget, drafting density, table design, and QC rules.
 
-3. **Requirement extraction**
+3. **Outsourced pre-audit gate**
+   - Use this gate when the bid is outsourced, commissioned, or started before bidder-specific evidence is available.
+   - First audit the tender file and produce a client-facing pre-audit package, not a full proposal draft.
+   - Required outputs:
+     - Tender review report: project overview, bid type mode, procurement object, deadlines, hard compliance items, scoring structure, response format, and major risks.
+     - Overall proposal framework: mode-appropriate table of contents, target page budget, chapter goals, and primary response locations.
+     - Scoring-response map: every scoring item, score value, source clause, response chapter, evidence needed, current evidence status, and expected scoring risk.
+     - Material request list: required documents, owner/client provider, purpose, matching scoring item or clause, matching proposal chapter, priority (`P0` mandatory/pass-fail, `P1` scoring-critical, `P2` polishing/supporting), required format, and deadline.
+     - Question and clarification list: issues to ask the client or purchaser, including ambiguous clauses, missing annexes, evidence gaps, impossible commitments, and authorization/status risks.
+     - Client feedback message: a concise external-facing summary that explains what is needed, why it is needed, which score or clause it supports, and what drafting risk remains if it is not provided.
+   - Use `待客户提供` or `待外包方确认` only in internal tracking tables and client feedback lists. Do not place these markers in formal proposal chapters.
+   - Stop after the pre-audit package if critical evidence is missing. Resume full drafting only after the client provides materials or explicitly accepts the risk.
+
+4. **Requirement extraction**
    - Extract four requirement ledgers before drafting: scoring criteria, qualification requirements, technical specifications, and business clauses.
    - Decompose procurement requirements into three levels before outlining: Level 1 requirement domain or system boundary, Level 2 function/service/work item, and Level 3 minimum response unit with acceptance point, evidence, and primary proposal location.
    - Extract mode-specific ledgers:
@@ -41,31 +56,32 @@ Treat the tender document as the source of truth. Do not invent qualifications, 
    - Classify each requirement as `mandatory`, `scored`, `contractual`, `format`, or `evidence`.
    - Stop and report conflicts, missing annexes, unreadable scans, ambiguous scoring language, or hard pass/fail risks.
 
-4. **Outline and chapter briefs**
+5. **Outline and chapter briefs**
    - Build a MECE outline that maps every scored and mandatory requirement to exactly one primary response location.
    - Write a brief for every chapter before drafting: bid type mode, chapter goal, source requirements, three-level procurement-demand mapping, claims allowed, evidence needed, diagrams/tables, and acceptance checks.
    - Create an overall page budget before drafting. Unless the tender document imposes a strict page limit, estimate the full proposal thickness by project value, scoring method, and selected mode. Use about 1 proposal page per RMB 10,000 as a practical baseline for software-platform and complex hybrid bids; apply goods-mode and service-mode adjustments from the mode rules.
    - Ask for human confirmation before full drafting when the outline controls compliance or a large document.
 
-5. **Draft chapters**
+6. **Draft chapters**
    - Draft one chapter at a time from the approved brief.
    - Prefer HTML for long technical方案 chapters that need SVG architecture diagrams, flowcharts, tables, and later DOCX conversion.
    - Follow the selected mode. For high-budget, complex, or highly competitive software-platform and hybrid projects, draft chapters as thick proposal text rather than short generic summaries: combine正文,专项措施,表格化管理工具,交付记录, and验收支撑材料. For goods-mode, do not inflate chapters with generic software/platform solution prose.
    - For every minimum-level section or subsection that responds to a Level 3 procurement requirement, write at least 3-5 substantive正文 paragraphs unless the selected mode or tender response form justifies a shorter table/form response. Paragraphs should cover mechanism, project scenario, execution details, records/forms, risks, and acceptance outputs, not repeat the heading in different words.
+   - For outsourced bids, re-check that the source material for each claim has been received, mapped, and accepted before turning it into formal正文. Unreceived evidence should remain in the material request list, not be converted into a definitive commitment.
    - After each chapter, run a local self-check: requirement coverage, forbidden placeholders, evidence gaps, consistency with prior chapters, evaluator readability, low-AI-flavor detail, and验收可追溯性.
 
-6. **Merge and quality check**
+7. **Merge and quality check**
    - Merge chapters only after chapter-level checks pass.
    - Run deterministic checks with `scripts/bid_quality_check.py` when files are available.
    - Produce a QC report listing blockers, warnings, traceability gaps, mode-mismatch risks, and recommended fixes.
 
-7. **Expert review simulation**
+8. **Expert review simulation**
    - Review from at least five perspectives when the bid is substantial: compliance officer, technical architect, scoring evaluator, delivery/operations lead, and commercial/legal reviewer.
    - Add a product/evidence reviewer for `goods-mode`; add an integration reviewer for `hybrid-goods-software-mode`; add a service delivery/SLA reviewer for `service-mode`.
    - Score against the tender scoring rubric when available.
    - Convert review comments into a revision plan with owner, target chapter, evidence needed, and expected scoring impact.
 
-8. **Iterate to final**
+9. **Iterate to final**
    - Repeat review and revision until the user accepts the risk level or the score target is reached.
    - Prepare a delivery checklist: final files, response forms, evidence attachments, unresolved confirmations, signature/seal items, and submission format.
 
@@ -95,6 +111,42 @@ Mode rules:
 - For `service-mode`, write around service outcomes: service catalog, staffing model, shift/response mechanism, SLA/KPI, tools and records, issue escalation, report rhythm, assessment method, knowledge transfer, continuity, and acceptance. Do not force service bids into product parameter tables or software architecture chapters.
 - If tender language conflicts with mode assumptions, obey the tender. A fixed response table, page cap, or mandatory format overrides thickness defaults.
 - If the project looks like工程施工 or pure construction, report that the skill can support requirement extraction and review, but施工组织设计,工程量清单,安全文明施工, and construction-specific scheduling may require a separate construction-bid workflow.
+
+## Outsourced Bid Intake Workflow
+
+Use this workflow when someone asks the user to write a bid for them, when the bidder's company materials are not yet provided, or when the user needs to report back to the client before drafting.
+
+The goal is to convert the tender into an actionable client feedback package:
+
+- **Can we bid?** Identify hard compliance risks, qualification gaps, deadline risks, format risks, and evidence blockers.
+- **How should the bid be structured?** Produce a mode-aware proposal framework and page budget.
+- **What do we need from the client?** Produce a material request list that ties every requested item to a tender clause, scoring item, response chapter, and risk level.
+- **How does each score get answered?** Produce a scoring-response map that shows the path from scoring language to proposal content and evidence.
+- **What can be drafted now?** Separate reusable/general sections from evidence-dependent sections, and do not turn missing materials into formal claims.
+
+Required tables for outsourced intake:
+
+| Table | Required columns |
+| --- | --- |
+| Tender audit summary | Item, tender source, finding, risk level, action needed, owner |
+| Scoring-response map | Score item, points, source clause, response strategy, target chapter, evidence required, evidence status, risk if missing |
+| Material request list | Material, provider, purpose, source clause/score item, target chapter, priority, format, deadline, notes |
+| Proposal framework | Chapter, purpose, mapped requirements, target pages, evidence dependencies, drafting status |
+| Client question list | Question, reason, affected score/clause, decision needed, deadline |
+| Evidence receipt tracker | Material, received status, file/location, quality check, usable claims, remaining gap |
+
+Priority rules:
+
+- `P0`: pass/fail, qualification, mandatory form, authorization, signature/seal, or hard compliance evidence. Do not proceed as if satisfied without evidence.
+- `P1`: scoring-critical evidence or content that materially affects ranking.
+- `P2`: supporting, polishing, or credibility-enhancing material.
+
+When material returns from the client:
+
+- Check each file against the material request list.
+- Mark whether it is usable, incomplete, expired, inconsistent, or unrelated.
+- Update the scoring-response map and chapter briefs before drafting.
+- Ask follow-up questions for gaps instead of inventing claims.
 
 ## Thick Proposal Drafting Rules
 
