@@ -140,6 +140,25 @@ Required tables for outsourced intake:
 | Client question list | Question, reason, affected score/clause, decision needed, deadline |
 | Evidence receipt tracker | Material, received status, file/location, quality check, usable claims, remaining gap |
 
+Baseline confirmation items for outsourced intake:
+
+- Bidder basic information form: legal name, registered address, mailing address, contact person, phone, email, employee count, bank, account number, tax number, invoice type, and invoicing capability. Use one form instead of asking scattered questions repeatedly.
+- Affiliation and fair-competition confirmation: confirm whether the bidder has an interest relationship with the purchaser, and whether the bidder shares the same legal representative/person in charge, controlling shareholder, or management relationship with other bidders. Treat tender-stated conflicts as `P0` when they cause invalid bid treatment.
+- No borrowed qualification, no subcontracting, and no transfer confirmation: if the tender prohibits挂靠,转包,分包, or unauthorized subcontracting, collect an explicit client confirmation and map it to contract/commitment chapters.
+- Platform operation confirmation: identify the person and phone number responsible for platform registration, registration/subscription, tender file download, bid file upload, online sign-in, online opening, and emergency contact on bid day.
+- Payment capability confirmation: for deposits, platform fees, or other online payments, confirm the paying account, payment route, deadline, and whether online banking/B2B payment capability is enabled before the deadline.
+- Bid validity and no-deviation confirmation: if the tender states a response validity period, full contract acceptance, no additional conditions, or no unstated deviations, obtain explicit confirmation before drafting commitment language.
+- Credit and litigation checks: when the tender references multiple public credit or litigation databases, request the mandatory report as `P0` if required, and classify supporting screenshots from related systems as `P1` when they strengthen restrictions review but are not mandatory attachments.
+- Staff health/safety/legal operation credentials: where industry rules require health certificates, operation permits, work permits, safety certificates, or similar credentials, classify as `P0` if the tender requires upload before bid, otherwise `P1` plus a written commitment that project staff will hold valid credentials before service.
+- Auxiliary performance evidence: beyond required contracts, request optional or scoring-critical proof such as award notice, invoices, acceptance forms, delivery records, service reports, client evaluations, or long-term supply certificates when they help prove真实性 and履约能力.
+- Internal price/cost tolerance check: when price score dominates or discount rate is decisive, request an internal cost model covering labor, transport, loss, tax, platform fee, financing, risk, and profit. Mark this as internal `P0` for decision-making, but do not include detailed cost sheets in the bid unless the tender requires them.
+
+Domain-specific evidence prompts:
+
+- For food, catering, ingredient supply, grain/oil, fresh produce, or canteen distribution bids, check food safety and traceability evidence: supplier/cooperative channel list, source traceability method, food business/production licenses, staff health certificates, meat quarantine certificates, fruit/vegetable pesticide residue test samples, frozen product cold-chain traceability, grain/oil/dry goods quality reports, non-GMO commitment or proof for edible oil when required, package label photos showing SC/QS, manufacturer, production date, shelf life, and remaining shelf life requirements, plus capability for unlisted ingredients, canteen consumables, temporary extra delivery, and emergency replenishment.
+- For goods-mode product supply, check product model/specification consistency, brochure or official website proof, inspection/test reports, certificates, manufacturer authorization, warranty terms, spare parts, packaging labels, production date/batch, and deviation table evidence.
+- For service-mode projects, check staffing roster, certificates, shift arrangement, response SLA, assessment records, service tools, reporting templates, escalation contacts, transition plan, and continuity plan.
+
 Priority rules:
 
 - `P0`: pass/fail, qualification, mandatory form, authorization, signature/seal, deadline, or hard compliance evidence. Mark as `必须提供，否则废标/高概率无效投标`. Do not proceed as if satisfied without evidence.
