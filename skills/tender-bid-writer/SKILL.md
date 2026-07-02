@@ -35,12 +35,13 @@ Treat the tender document as the source of truth. Do not invent qualifications, 
    - Use this gate when the bid is outsourced, commissioned, or started before bidder-specific evidence is available.
    - First audit the tender file and produce a client-facing pre-audit package, not a full proposal draft.
    - Required outputs:
-     - Tender review report: project overview, bid type mode, procurement object, deadlines, hard compliance items, scoring structure, response format, and major risks.
+     - Tender review report: project overview, bid type mode, procurement object, deadlines, hard compliance items, rejection/disqualification items, mandatory response items, scoring structure, response format, and major risks.
      - Overall proposal framework: mode-appropriate table of contents, target page budget, chapter goals, and primary response locations.
-     - Scoring-response map: every scoring item, score value, source clause, response chapter, evidence needed, current evidence status, and expected scoring risk.
-     - Material request list: required documents, owner/client provider, purpose, matching scoring item or clause, matching proposal chapter, priority (`P0` mandatory/pass-fail, `P1` scoring-critical, `P2` polishing/supporting), required format, and deadline.
+     - Scoring-response map: every scoring item, score value, source clause, response chapter, evidence needed, current evidence status, expected scoring risk, and whether missing evidence causes rejection, score loss, or only weakens credibility.
+     - Mandatory-response map: every `必须`, `应`, `不得偏离`, `实质性响应`, `★`, `#`, `否决`, `无效投标`, qualification, signature/seal, format, deadline, or required attachment item, with response method and evidence status.
+     - Material request list: required documents, owner/client provider, purpose, matching scoring item or clause, matching proposal chapter, material necessity (`must-provide-or-reject`, `must-respond-can-commit`, `scoring-critical`, `optional-supporting`, or `not-needed-now`), priority (`P0` mandatory/pass-fail, `P1` scoring-critical, `P2` polishing/supporting), required format, deadline, and consequence if not provided.
      - Question and clarification list: issues to ask the client or purchaser, including ambiguous clauses, missing annexes, evidence gaps, impossible commitments, and authorization/status risks.
-     - Client feedback message: a concise external-facing summary that explains what is needed, why it is needed, which score or clause it supports, and what drafting risk remains if it is not provided.
+     - Client feedback message: a concise external-facing summary that separates materials that must be provided to avoid rejection, items that must be responded to, optional/supporting materials that may be omitted, and what score/compliance risk remains if each item is missing.
    - Use `待客户提供` or `待外包方确认` only in internal tracking tables and client feedback lists. Do not place these markers in formal proposal chapters.
    - Stop after the pre-audit package if critical evidence is missing. Resume full drafting only after the client provides materials or explicitly accepts the risk.
 
@@ -122,24 +123,36 @@ The goal is to convert the tender into an actionable client feedback package:
 - **How should the bid be structured?** Produce a mode-aware proposal framework and page budget.
 - **What do we need from the client?** Produce a material request list that ties every requested item to a tender clause, scoring item, response chapter, and risk level.
 - **How does each score get answered?** Produce a scoring-response map that shows the path from scoring language to proposal content and evidence.
+- **What will cause rejection?** Explicitly list rejection/disqualification items and materials that must be provided to avoid invalid bid treatment.
+- **What can be omitted?** Explicitly list optional or low-value supporting materials that can be skipped without causing rejection, while noting any possible score or credibility impact.
 - **What can be drafted now?** Separate reusable/general sections from evidence-dependent sections, and do not turn missing materials into formal claims.
 
 Required tables for outsourced intake:
 
 | Table | Required columns |
 | --- | --- |
-| Tender audit summary | Item, tender source, finding, risk level, action needed, owner |
-| Scoring-response map | Score item, points, source clause, response strategy, target chapter, evidence required, evidence status, risk if missing |
-| Material request list | Material, provider, purpose, source clause/score item, target chapter, priority, format, deadline, notes |
+| Tender audit summary | Item, tender source, finding, risk level, rejection/mandatory flag, action needed, owner |
+| Rejection and mandatory-response checklist | Clause, source location, requirement, category, response method, required material, consequence if missing, owner, status |
+| Scoring-response map | Score item, points, source clause, response strategy, target chapter, evidence required, material necessity, evidence status, risk if missing |
+| Material request list | Material, provider, purpose, source clause/score item, target chapter, material necessity, priority, format, deadline, consequence if missing, notes |
+| Optional material list | Material, possible use, related chapter/score, why optional, impact if omitted |
 | Proposal framework | Chapter, purpose, mapped requirements, target pages, evidence dependencies, drafting status |
 | Client question list | Question, reason, affected score/clause, decision needed, deadline |
 | Evidence receipt tracker | Material, received status, file/location, quality check, usable claims, remaining gap |
 
 Priority rules:
 
-- `P0`: pass/fail, qualification, mandatory form, authorization, signature/seal, or hard compliance evidence. Do not proceed as if satisfied without evidence.
+- `P0`: pass/fail, qualification, mandatory form, authorization, signature/seal, deadline, or hard compliance evidence. Mark as `必须提供，否则废标/高概率无效投标`. Do not proceed as if satisfied without evidence.
 - `P1`: scoring-critical evidence or content that materially affects ranking.
 - `P2`: supporting, polishing, or credibility-enhancing material.
+
+Material necessity rules:
+
+- `must-provide-or-reject`: the material itself is required by a rejection, qualification, mandatory attachment, signature/seal, authorization, or hard compliance clause. Tell the client it must be provided.
+- `must-respond-can-commit`: the requirement must be answered in the proposal, but can be supported by a formal response, commitment, plan, or explanation if the tender does not require a separate attachment.
+- `scoring-critical`: not normally a rejection item, but missing it will lose points or weaken a scored claim.
+- `optional-supporting`: helpful for credibility or polishing, but can be omitted if time is short.
+- `not-needed-now`: not requested by the tender or not useful for the current bid stage; do not ask the client for it unless later evidence gaps justify it.
 
 When material returns from the client:
 
