@@ -20,6 +20,10 @@ Use this table shape for extracted requirements:
 - Security, data, privacy, localization, integration, compatibility
 - Contract deviations, payment, penalties, IP, confidentiality
 - Required response forms, seals, signatures, copies, file formats
+- Submission mode: `electronic-bid`, `paper-bid`, or `dual-bid`
+- Electronic bid details: platform account, CA/digital certificate, electronic seal/signature authority, upload operator, file format/size, encryption, decryption, online sign-in/opening contact, upload deadline
+- Paper bid details: handwritten signature, company seal, page/cross-page seal, original/copy quantities, binding, envelope label/seal, delivery address/person/deadline
+- Tender-native Word/DOCX forms that must be reproduced as Word tables in the client material collection package
 - Clarification deadlines, bid opening time, submission channel
 
 ## Chapter Brief Template
@@ -45,6 +49,8 @@ Blocker checks:
 - Missing response to a mandatory or scored requirement
 - Unsupported qualification, certificate, case, authorization, staffing, or product claim
 - Tender deadline, submission format, seal/signature, or form requirement omitted
+- Electronic bid treated like a paper bid, or paper bid treated like an electronic-only upload
+- Official Word/DOCX response tables flattened into generic checklists when the client must fill tender-native forms
 - Contradiction between chapters or with tender clauses
 - Placeholder text such as `TODO`, `待补充`, `公司名称`, `项目名称`, or template-only language
 - Scope, price, schedule, warranty, or legal commitment invented by the agent
