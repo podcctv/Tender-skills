@@ -41,6 +41,7 @@ Treat the tender document as the source of truth. Do not invent qualifications, 
      - Mandatory-response map: every `必须`, `应`, `不得偏离`, `实质性响应`, `★`, `#`, `否决`, `无效投标`, qualification, signature/seal, format, deadline, or required attachment item, with response method and evidence status.
      - Material request list: required documents, owner/client provider, purpose, matching scoring item or clause, matching proposal chapter, material necessity (`must-provide-or-reject`, `must-respond-can-commit`, `scoring-critical`, `optional-supporting`, or `not-needed-now`), priority (`P0` mandatory/pass-fail, `P1` scoring-critical, `P2` polishing/supporting), required format, deadline, and consequence if not provided.
      - Tender-native material collection package: a client-facing material checklist and fill-in package generated from the current tender's required response documents, forms, and tables, preserving the tender's form names, fields, columns, notes, signatures/seals, package numbers, and quotation units. Default output is a `.docx` file; when the tender source is Word/DOCX, recreate the client-fill package as Word tables that follow the tender's own table layout rather than generic checklist tables. Add `.xlsx` companion sheets when there are many structured rows such as quotation details, personnel, vehicles, equipment, products, or parameter responses.
+     - Client-easy material package structure: organize the collection package into qualification/regulatory baseline, scoring evidence, bid-type increments, tender-native forms, and submission/signature-seal controls so the client can upload materials with minimal back-and-forth.
      - Submission/signature-seal requirement map: classify the submission as `electronic-bid`, `paper-bid`, or `dual-bid`; map every signing, company seal, legal representative/authorized representative signature, electronic seal, CA certificate, upload, encryption/decryption, binding, envelope, original/copy, and delivery requirement to its source clause, owner, deadline, and rejection/format risk.
      - Question and clarification list: issues to ask the client or purchaser, including ambiguous clauses, missing annexes, evidence gaps, impossible commitments, and authorization/status risks.
      - Client feedback message: a concise external-facing summary that separates materials that must be provided to avoid rejection, items that must be responded to, optional/supporting materials that may be omitted, and what score/compliance risk remains if each item is missing.
@@ -92,6 +93,7 @@ Treat the tender document as the source of truth. Do not invent qualifications, 
 
 - Read `references/workflow.md` for the detailed article-inspired process, output files, and stage gates.
 - Read `references/checklists.md` when extracting requirements, writing briefs, or running expert review.
+- Read `references/material-collection-design.md` when producing outsourced pre-audit packages, client-facing material request lists, tender-native fill-in packages, or when the user provides a prior material checklist/template to reuse as a format or logic reference.
 - Read `references/platform-compatibility.md` when installing or adapting this skill for Codex, OpenClaw, or Hermes.
 - Use `scripts/bid_quality_check.py` for local proposal checks when draft files exist.
 
@@ -140,12 +142,16 @@ Required tables for outsourced intake:
 | Material request list | Material, provider, purpose, source clause/score item, target chapter, material necessity, priority, format, deadline, consequence if missing, notes |
 | Tender-native form extraction table | Tender form/document name, source location, original fields/columns, client input needed, attachment/evidence needed, signature/seal requirement, priority, notes |
 | Submission and signature-seal map | Submission type, source clause, form/document, paper signature/seal requirement, electronic signature/seal requirement, scan/upload requirement, operator/owner, deadline, consequence if missed |
+| Regulatory baseline checklist | Baseline item, legal/tender source, applicability, tender upload required?, client confirmation/evidence, material necessity, risk if missing, notes |
+| Bid-type increment matrix | Bid type or scenario, increment evidence family, when to request, priority, skip condition, target chapter/form |
 | Optional material list | Material, possible use, related chapter/score, why optional, impact if omitted |
 | Proposal framework | Chapter, purpose, mapped requirements, target pages, evidence dependencies, drafting status |
 | Client question list | Question, reason, affected score/clause, decision needed, deadline |
 | Evidence receipt tracker | Material, received status, file/location, quality check, usable claims, remaining gap |
 
 Tender-native material collection package rules:
+
+- Use the material package architecture in `references/material-collection-design.md`: first qualification and regulatory baseline, second scoring evidence, third bid-type increments, then tender-native forms and submission/signature-seal controls. If the user provides a previous material checklist, study its presentation logic but only reuse material items that the current tender or applicable bid type justifies.
 
 - Default deliverable: create the client-facing collection package as Word `.docx`, named like `资料清单及客户填报表（项目名称）.docx`, because clients commonly fill, forward, print, sign, seal, and return Word files. Use Markdown only for quick previews or when the user explicitly asks for non-Word output.
 - Source-format rule: when the tender document or official response template is Word/DOCX, the client-facing `.docx` must use Word-native tables that mirror the tender forms as closely as practical. Preserve table order, section headings, merged-cell structures, required blank fields, row/column labels, package fields, units, notes, and signature/seal positions. Do not flatten official Word tables into generic Markdown-style checklists.
@@ -171,6 +177,7 @@ Submission, signature, and seal mode rules:
 Baseline confirmation items for outsourced intake:
 
 - Bidder basic information form: legal name, registered address, mailing address, contact person, phone, email, employee count, bank, account number, tax number, invoice type, and invoicing capability. Use one form instead of asking scattered questions repeatedly.
+- Regulatory baseline confirmation: for government procurement and regulated industries, identify the general statutory eligibility and lawful-performance items that apply even when the tender text is brief. Do not overstate them as bid-rejection upload items unless the tender or applicable law requires pre-bid proof; otherwise classify them as `legal-baseline-confirmation` or `must-respond-can-commit`.
 - Affiliation and fair-competition confirmation: confirm whether the bidder has an interest relationship with the purchaser, and whether the bidder shares the same legal representative/person in charge, controlling shareholder, or management relationship with other bidders. Treat tender-stated conflicts as `P0` when they cause invalid bid treatment.
 - No borrowed qualification, no subcontracting, and no transfer confirmation: if the tender prohibits挂靠,转包,分包, or unauthorized subcontracting, collect an explicit client confirmation and map it to contract/commitment chapters.
 - Platform operation confirmation: identify the person and phone number responsible for platform registration, registration/subscription, tender file download, bid file upload, online sign-in, online opening, and emergency contact on bid day.
@@ -196,6 +203,7 @@ Priority rules:
 Material necessity rules:
 
 - `must-provide-or-reject`: the material itself is required by a rejection, qualification, mandatory attachment, signature/seal, authorization, or hard compliance clause. Tell the client it must be provided.
+- `legal-baseline-confirmation`: the bidder must legally possess the capability, license, status, health/safety credential, or compliance condition to perform, but the tender does not clearly require a pre-bid upload attachment. Ask the client to confirm and provide proof if available; upgrade to `must-provide-or-reject` only when the tender, law, or purchaser requires pre-bid evidence.
 - `must-respond-can-commit`: the requirement must be answered in the proposal, but can be supported by a formal response, commitment, plan, or explanation if the tender does not require a separate attachment.
 - `scoring-critical`: not normally a rejection item, but missing it will lose points or weaken a scored claim.
 - `optional-supporting`: helpful for credibility or polishing, but can be omitted if time is short.
