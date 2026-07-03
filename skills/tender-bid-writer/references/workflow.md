@@ -15,6 +15,7 @@ Do not skip these gates on real bids:
    - Produce ledgers for scoring, qualification, technical, business, format, and evidence requirements.
    - Identify pass/fail clauses, hard deadlines, mandatory forms, seal/signature rules, and disqualification risks.
    - Classify submission as `electronic-bid`, `paper-bid`, or `dual-bid`, then extract upload, CA/electronic seal, physical signature/seal, binding, envelope, delivery, online opening, and decryption requirements.
+   - For outsourced first-round work, consolidate the client-facing output into `资料清单（项目名称）.docx` and keep detailed writer logic in `标书组织说明（项目名称）.md`.
    - Ask the user to confirm high-risk interpretation before drafting.
 
 3. **Outline/brief gate**
@@ -57,9 +58,8 @@ Use these names unless the user or project already has conventions:
 - `01_requirements/business_clauses.md`
 - `01_requirements/evidence_matrix.md`
 - `01_requirements/submission_signature_seal_map.md`
-- `07_client_feedback/material_request_list.md`
-- `07_client_feedback/资料清单及客户填报表（项目名称）.docx`
-- `07_client_feedback/资料填报明细表（项目名称）.xlsx` when large structured tables are needed
+- `07_client_feedback/资料清单（项目名称）.docx` for outsourced first-round client communication
+- `07_client_feedback/标书组织说明（项目名称）.md` for outsourced first-round writer organization
 - `02_outline/proposal_outline.md`
 - `02_outline/chapter_briefs.md`
 - `03_chapters/chapter_XX_<name>.html`

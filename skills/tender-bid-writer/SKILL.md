@@ -1,6 +1,6 @@
 ---
 name: tender-bid-writer
-description: End-to-end tender and bid proposal workflow for Chinese government, enterprise, and integration projects. Use when Codex/OpenClaw/Hermes needs to analyze bidding documents; handle outsourced/commissioned bid-writing intake; classify the bid as goods-mode, software-platform-mode, hybrid-goods-software-mode, or service-mode; extract scoring criteria, qualification requirements, technical specifications, and business clauses; build a MECE proposal outline and chapter briefs; draft evaluator-ready, low-AI-flavor bid chapters with mode-appropriate thickness; merge and quality-check HTML/Markdown/DOCX outputs; simulate multi-expert bid review; iterate revisions; and prepare final delivery checklists for tender submissions.
+description: End-to-end tender and bid proposal workflow for Chinese government, enterprise, and integration projects. Use when Codex/OpenClaw/Hermes needs to analyze bidding documents; handle outsourced/commissioned bid-writing intake with a two-file first-round package (`资料清单（项目名称）.docx` for client communication plus `标书组织说明（项目名称）.md` for the writer); classify the bid as goods-mode, software-platform-mode, hybrid-goods-software-mode, or service-mode; extract scoring criteria, qualification requirements, technical specifications, and business clauses; build a MECE proposal outline and chapter briefs; draft evaluator-ready, low-AI-flavor bid chapters with mode-appropriate thickness; merge and quality-check HTML/Markdown/DOCX outputs; simulate multi-expert bid review; iterate revisions; and prepare final delivery checklists for tender submissions.
 ---
 
 # Tender Bid Writer
@@ -23,7 +23,7 @@ Treat the tender document as the source of truth. Do not invent qualifications, 
      - `04_merge/` merged proposal
      - `05_qc/` quality checks and review records
      - `06_delivery/` final DOCX/PDF/HTML and delivery checklist
-     - `07_client_feedback/` outsourced pre-audit reports, material request lists, client-facing questions, and evidence-receipt tracking
+     - `07_client_feedback/` outsourced first-round package: `资料清单（项目名称）.docx` and `标书组织说明（项目名称）.md`
 
 2. **Bid type mode classification**
    - Before extracting requirements or outlining, classify the bid into exactly one primary mode: `goods-mode`, `software-platform-mode`, `hybrid-goods-software-mode`, or `service-mode`.
@@ -33,18 +33,11 @@ Treat the tender document as the source of truth. Do not invent qualifications, 
 
 3. **Outsourced pre-audit gate**
    - Use this gate when the bid is outsourced, commissioned, or started before bidder-specific evidence is available.
-   - First audit the tender file and produce a client-facing pre-audit package, not a full proposal draft.
-   - Required outputs:
-     - Tender review report: project overview, bid type mode, procurement object, deadlines, hard compliance items, rejection/disqualification items, mandatory response items, scoring structure, response format, and major risks.
-     - Overall proposal framework: mode-appropriate table of contents, target page budget, chapter goals, and primary response locations.
-     - Scoring-response map: every scoring item, score value, source clause, response chapter, evidence needed, current evidence status, expected scoring risk, and whether missing evidence causes rejection, score loss, or only weakens credibility.
-     - Mandatory-response map: every `必须`, `应`, `不得偏离`, `实质性响应`, `★`, `#`, `否决`, `无效投标`, qualification, signature/seal, format, deadline, or required attachment item, with response method and evidence status.
-     - Material request list: required documents, owner/client provider, purpose, matching scoring item or clause, matching proposal chapter, material necessity (`must-provide-or-reject`, `must-respond-can-commit`, `scoring-critical`, `optional-supporting`, or `not-needed-now`), priority (`P0` mandatory/pass-fail, `P1` scoring-critical, `P2` polishing/supporting), required format, deadline, and consequence if not provided.
-     - Tender-native material collection package: a client-facing material checklist and fill-in package generated from the current tender's required response documents, forms, and tables, preserving the tender's form names, fields, columns, notes, signatures/seals, package numbers, and quotation units. Default output is a `.docx` file; when the tender source is Word/DOCX, recreate the client-fill package as Word tables that follow the tender's own table layout rather than generic checklist tables. Add `.xlsx` companion sheets when there are many structured rows such as quotation details, personnel, vehicles, equipment, products, or parameter responses.
-     - Client-easy material package structure: organize the collection package into qualification/regulatory baseline, scoring evidence, bid-type increments, tender-native forms, and submission/signature-seal controls so the client can upload materials with minimal back-and-forth.
-     - Submission/signature-seal requirement map: classify the submission as `electronic-bid`, `paper-bid`, or `dual-bid`; map every signing, company seal, legal representative/authorized representative signature, electronic seal, CA certificate, upload, encryption/decryption, binding, envelope, original/copy, and delivery requirement to its source clause, owner, deadline, and rejection/format risk.
-     - Question and clarification list: issues to ask the client or purchaser, including ambiguous clauses, missing annexes, evidence gaps, impossible commitments, and authorization/status risks.
-     - Client feedback message: a concise external-facing summary that separates materials that must be provided to avoid rejection, items that must be responded to, optional/supporting materials that may be omitted, and what score/compliance risk remains if each item is missing.
+   - First audit the tender file and produce exactly two first-round deliverables unless the user explicitly requests more files:
+     - `资料清单（项目名称）.docx`: the only client-facing Word document for external communication. It must combine the tender review digest, urgent P0 reminders, rejection/must-response items, scoring-evidence requests, bid-type/industry-specific material requests, tender-native fill-in forms, signature/seal/submission requirements, client questions, optional materials, return naming rules, and next-step instructions. Use the structure in `references/material-collection-design.md`; for food/ingredient distribution bids, use its food distribution template as the first default.
+     - `标书组织说明（项目名称）.md`: the writer-facing Markdown file for organizing the bid. It must include the tender audit detail, bid type mode, submission mode, scoring-response map, mandatory-response map, proposal outline, page budget, evidence dependency map, claim boundaries, drafting sequence, unresolved questions, and risk notes. This file is internal and may use `待客户提供` or `待外包方确认`.
+   - Put review reports, scoring maps, mandatory-response maps, material request lists, form extraction, submission/signature-seal checks, and client feedback wording inside those two files instead of scattering them into many external deliverables.
+   - Do not default to a separate Excel workbook for outsourced first-round intake. If a tender has very large repeated rows, keep the customer communication in the Word document and ask before creating an optional companion workbook.
    - Use `待客户提供` or `待外包方确认` only in internal tracking tables and client feedback lists. Do not place these markers in formal proposal chapters.
    - Stop after the pre-audit package if critical evidence is missing. Resume full drafting only after the client provides materials or explicitly accepts the risk.
 
@@ -132,30 +125,26 @@ The goal is to convert the tender into an actionable client feedback package:
 - **What can be omitted?** Explicitly list optional or low-value supporting materials that can be skipped without causing rejection, while noting any possible score or credibility impact.
 - **What can be drafted now?** Separate reusable/general sections from evidence-dependent sections, and do not turn missing materials into formal claims.
 
-Required tables for outsourced intake:
+Two-file outsourced intake content map:
 
-| Table | Required columns |
+| Content block | Put in Word `资料清单（项目名称）.docx` | Put in Markdown `标书组织说明（项目名称）.md` |
 | --- | --- |
-| Tender audit summary | Item, tender source, finding, risk level, rejection/mandatory flag, action needed, owner |
-| Rejection and mandatory-response checklist | Clause, source location, requirement, category, response method, required material, consequence if missing, owner, status |
-| Scoring-response map | Score item, points, source clause, response strategy, target chapter, evidence required, material necessity, evidence status, risk if missing |
-| Material request list | Material, provider, purpose, source clause/score item, target chapter, material necessity, priority, format, deadline, consequence if missing, notes |
-| Tender-native form extraction table | Tender form/document name, source location, original fields/columns, client input needed, attachment/evidence needed, signature/seal requirement, priority, notes |
-| Submission and signature-seal map | Submission type, source clause, form/document, paper signature/seal requirement, electronic signature/seal requirement, scan/upload requirement, operator/owner, deadline, consequence if missed |
-| Regulatory baseline checklist | Baseline item, legal/tender source, applicability, tender upload required?, client confirmation/evidence, material necessity, risk if missing, notes |
-| Bid-type increment matrix | Bid type or scenario, increment evidence family, when to request, priority, skip condition, target chapter/form |
-| Optional material list | Material, possible use, related chapter/score, why optional, impact if omitted |
-| Proposal framework | Chapter, purpose, mapped requirements, target pages, evidence dependencies, drafting status |
-| Client question list | Question, reason, affected score/clause, decision needed, deadline |
-| Evidence receipt tracker | Material, received status, file/location, quality check, usable claims, remaining gap |
+| Tender audit digest | Short project facts, deadline, submission mode, package/bid section, top P0 risks, client action summary | Full tender audit summary with source anchors, assumptions, and risk analysis |
+| Rejection and mandatory response | Client-facing "必须提供/必须确认，否则废标或高风险无效" table | Complete mandatory-response map with clause, source location, response method, owner, status |
+| Scoring evidence | Score item, points, material to provide, optional supplementary proof, missing-score impact | Scoring-response map with response strategy, target chapter, claim boundary, evidence status |
+| Material request and fill-in forms | Client-fill tables by priority and topic, using tender-native Word tables where available | Writer-control material ledger, receipt tracker, quality checks, and evidence-to-chapter mapping |
+| Submission and signature/seal | Signing, sealing, upload, CA/e-seal, paper binding/envelope/delivery requirements in client language | Submission/signature-seal map with source clauses and consistency checks |
+| Bid-type or industry increments | Only the relevant industry material section, such as food distribution专项资料 | Bid-type increment matrix, skip conditions, and future template notes |
+| Optional and deferred materials | "有则提供/可暂缓/当前不需要" section with impact | Optional material list and decision rationale |
+| Questions and next steps | Client confirmation questions, return deadline, file naming, contact and second-round process | Drafting plan, proposal outline, page budget, unresolved issues, next actions |
 
 Tender-native material collection package rules:
 
-- Use the material package architecture in `references/material-collection-design.md`: first qualification and regulatory baseline, second scoring evidence, third bid-type increments, then tender-native forms and submission/signature-seal controls. If the user provides a previous material checklist, study its presentation logic but only reuse material items that the current tender or applicable bid type justifies.
+- Use the two-file and client-facing Word architecture in `references/material-collection-design.md`. If the user provides a previous material checklist, study its section order, tone, and table presentation logic, but only reuse material items that the current tender or applicable bid type justifies.
 
-- Default deliverable: create the client-facing collection package as Word `.docx`, named like `资料清单及客户填报表（项目名称）.docx`, because clients commonly fill, forward, print, sign, seal, and return Word files. Use Markdown only for quick previews or when the user explicitly asks for non-Word output.
+- Default deliverable: create the client-facing collection package as Word `.docx`, named like `资料清单（项目名称）.docx`, because clients commonly fill, forward, print, sign, seal, and return Word files. Do not replace it with Markdown. Use Markdown for the internal `标书组织说明（项目名称）.md` only, unless the user explicitly asks for a preview.
 - Source-format rule: when the tender document or official response template is Word/DOCX, the client-facing `.docx` must use Word-native tables that mirror the tender forms as closely as practical. Preserve table order, section headings, merged-cell structures, required blank fields, row/column labels, package fields, units, notes, and signature/seal positions. Do not flatten official Word tables into generic Markdown-style checklists.
-- Optional companion workbook: when the tender includes large structured datasets or repeated rows, also create an Excel `.xlsx` file named like `资料填报明细表（项目名称）.xlsx`. Use it for itemized quotations, personnel rosters, vehicle/equipment lists, product/specification matrices, parameter response tables, performance lists, and evidence tracking. The Word file remains the main external-facing deliverable and should reference the workbook when used.
+- Optional companion workbook: do not create Excel by default during outsourced first-round intake. If the tender includes large structured datasets or repeated rows and a workbook would materially reduce client workload, ask first and then create `资料填报明细表（项目名称）.xlsx` as an optional companion. The Word file remains the single external-facing control document and should reference any workbook when used.
 - If both `.docx` and `.xlsx` are produced, keep field names, item numbering, package numbers, units, and required notes consistent across both files.
 - Do not use a fixed generic checklist when the tender provides its own response document composition, official forms, quotation tables, commitment letters, qualification forms, performance tables, or technical response tables. Extract those forms from the current tender and turn them into the client material request package.
 - Preserve tender-specific structure. Keep original form/table titles, column names, required units, package number fields, signature/seal positions, notes, and instructions. If helper prompts are needed, place them before/after the official-style table or in a separate "填报说明/我方备注" tracking table so the official form structure stays recognizable and can still be copied into the proposal.

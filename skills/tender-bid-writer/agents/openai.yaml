@@ -1,4 +1,4 @@
 interface:
   display_name: "投标方案编制"
-  short_description: "审标、要材料、映射评分点，生成厚标书正文并完成质检评审"
-  default_prompt: "Use $tender-bid-writer to extract requirements from a tender package, draft the bid technical proposal, run QC, and prepare the delivery checklist."
+  short_description: "审标、生成客户资料清单 Word、组织标书 Markdown，并编写厚标书正文"
+  default_prompt: "Use $tender-bid-writer to audit the tender package. If this is an outsourced bid, first produce two files: 资料清单（项目名称）.docx for client material collection and 标书组织说明（项目名称）.md for internal bid organization; then continue drafting only after materials are confirmed."

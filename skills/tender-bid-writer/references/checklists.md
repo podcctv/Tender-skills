@@ -21,6 +21,7 @@ Use this table shape for extracted requirements:
 - Contract deviations, payment, penalties, IP, confidentiality
 - Required response forms, seals, signatures, copies, file formats
 - Submission mode: `electronic-bid`, `paper-bid`, or `dual-bid`
+- Outsourced first-round deliverables: `资料清单（项目名称）.docx` for the client and `标书组织说明（项目名称）.md` for the writer
 - Electronic bid details: platform account, CA/digital certificate, electronic seal/signature authority, upload operator, file format/size, encryption, decryption, online sign-in/opening contact, upload deadline
 - Paper bid details: handwritten signature, company seal, page/cross-page seal, original/copy quantities, binding, envelope label/seal, delivery address/person/deadline
 - Tender-native Word/DOCX forms that must be reproduced as Word tables in the client material collection package
@@ -49,6 +50,8 @@ Blocker checks:
 - Missing response to a mandatory or scored requirement
 - Unsupported qualification, certificate, case, authorization, staffing, or product claim
 - Tender deadline, submission format, seal/signature, or form requirement omitted
+- Outsourced first-round output scattered into many client-facing files instead of the required Word material list plus internal Markdown organization file
+- Client-facing Word document exposes internal-only notes, unsupported claims, or writer-control placeholders
 - Electronic bid treated like a paper bid, or paper bid treated like an electronic-only upload
 - Official Word/DOCX response tables flattened into generic checklists when the client must fill tender-native forms
 - Contradiction between chapters or with tender clauses
