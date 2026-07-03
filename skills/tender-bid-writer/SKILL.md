@@ -40,6 +40,7 @@ Treat the tender document as the source of truth. Do not invent qualifications, 
      - Scoring-response map: every scoring item, score value, source clause, response chapter, evidence needed, current evidence status, expected scoring risk, and whether missing evidence causes rejection, score loss, or only weakens credibility.
      - Mandatory-response map: every `必须`, `应`, `不得偏离`, `实质性响应`, `★`, `#`, `否决`, `无效投标`, qualification, signature/seal, format, deadline, or required attachment item, with response method and evidence status.
      - Material request list: required documents, owner/client provider, purpose, matching scoring item or clause, matching proposal chapter, material necessity (`must-provide-or-reject`, `must-respond-can-commit`, `scoring-critical`, `optional-supporting`, or `not-needed-now`), priority (`P0` mandatory/pass-fail, `P1` scoring-critical, `P2` polishing/supporting), required format, deadline, and consequence if not provided.
+     - Tender-native material collection package: a client-facing material checklist and fill-in package generated from the current tender's required response documents, forms, and tables, preserving the tender's form names, fields, columns, notes, signatures/seals, package numbers, and quotation units.
      - Question and clarification list: issues to ask the client or purchaser, including ambiguous clauses, missing annexes, evidence gaps, impossible commitments, and authorization/status risks.
      - Client feedback message: a concise external-facing summary that separates materials that must be provided to avoid rejection, items that must be responded to, optional/supporting materials that may be omitted, and what score/compliance risk remains if each item is missing.
    - Use `待客户提供` or `待外包方确认` only in internal tracking tables and client feedback lists. Do not place these markers in formal proposal chapters.
@@ -123,6 +124,7 @@ The goal is to convert the tender into an actionable client feedback package:
 - **How should the bid be structured?** Produce a mode-aware proposal framework and page budget.
 - **What do we need from the client?** Produce a material request list that ties every requested item to a tender clause, scoring item, response chapter, and risk level.
 - **How does each score get answered?** Produce a scoring-response map that shows the path from scoring language to proposal content and evidence.
+- **What exact forms must the client fill or support?** Generate a tender-native material collection package that mirrors the current tender's response document composition, official forms, and table structures.
 - **What will cause rejection?** Explicitly list rejection/disqualification items and materials that must be provided to avoid invalid bid treatment.
 - **What can be omitted?** Explicitly list optional or low-value supporting materials that can be skipped without causing rejection, while noting any possible score or credibility impact.
 - **What can be drafted now?** Separate reusable/general sections from evidence-dependent sections, and do not turn missing materials into formal claims.
@@ -135,10 +137,22 @@ Required tables for outsourced intake:
 | Rejection and mandatory-response checklist | Clause, source location, requirement, category, response method, required material, consequence if missing, owner, status |
 | Scoring-response map | Score item, points, source clause, response strategy, target chapter, evidence required, material necessity, evidence status, risk if missing |
 | Material request list | Material, provider, purpose, source clause/score item, target chapter, material necessity, priority, format, deadline, consequence if missing, notes |
+| Tender-native form extraction table | Tender form/document name, source location, original fields/columns, client input needed, attachment/evidence needed, signature/seal requirement, priority, notes |
 | Optional material list | Material, possible use, related chapter/score, why optional, impact if omitted |
 | Proposal framework | Chapter, purpose, mapped requirements, target pages, evidence dependencies, drafting status |
 | Client question list | Question, reason, affected score/clause, decision needed, deadline |
 | Evidence receipt tracker | Material, received status, file/location, quality check, usable claims, remaining gap |
+
+Tender-native material collection package rules:
+
+- Do not use a fixed generic checklist when the tender provides its own response document composition, official forms, quotation tables, commitment letters, qualification forms, performance tables, or technical response tables. Extract those forms from the current tender and turn them into the client material request package.
+- Preserve tender-specific structure. Keep original form/table titles, column names, required units, package number fields, signature/seal positions, notes, and instructions. If helper columns are needed, put them in a separate "填报说明/我方备注" column or a separate tracking table so the official form structure stays recognizable.
+- For every table-like response item, ask for data in the same grain as the tender table. Examples include quotation schedules, itemized quotation tables, personnel tables, vehicle/equipment tables, warehouse/site tables, performance tables, product parameter response tables, service commitment tables, and deviation tables.
+- Split the package into two layers:
+  - Client-fill layer: the fields the client must fill or materials they must attach, using the tender's own wording and table structure where available.
+  - Writer-control layer: source clause, material necessity, P0/P1/P2 priority, rejection/scoring consequence, target chapter, received status, and quality check notes.
+- If the user provides a prior material checklist template, use it only as a style/reference for presentation. Do not copy project-specific material items from the old template unless the current tender also requires them.
+- If a required tender form is missing, unreadable, or ambiguous, list it in the client question list and do not invent fields.
 
 Baseline confirmation items for outsourced intake:
 
