@@ -66,6 +66,33 @@ REQUIREMENT_HINTS = [
     "承诺",
 ]
 
+AI_FLAVOR_PATTERNS = [
+    (r"本节围绕[^。；;]{0,80}(展开|进行|阐述|响应)", "repeated section-opening template"),
+    (r"本章节?将从[^。；;]{0,80}(方面|维度|角度)", "chapter preview filler"),
+    (r"围绕[^。；;]{0,80}(展开响应|开展工作|进行说明)", "around-topic filler"),
+    (r"全(过程|链路|角色|闭环|维度|场景|周期)", "slogan-like 全* phrase"),
+    (r"建立健全[^。；;]{0,30}机制", "abstract mechanism claim"),
+    (r"(切实保障|有效提升|全面推进|不断完善|充分发挥|持续优化)", "generic official-sounding verb"),
+    (r"形成[^。；;]{0,30}闭环", "abstract closed-loop claim"),
+    (r"以[^。；;]{0,30}为抓手", "generic 抓手 phrase"),
+]
+
+PROJECT_RECORD_WORDS = [
+    "台账",
+    "记录",
+    "清单",
+    "签收",
+    "验收",
+    "检测",
+    "巡检",
+    "工单",
+    "会议纪要",
+    "复核",
+    "整改",
+    "交付",
+    "归档",
+]
+
 
 def read_text(path: Path) -> str:
     suffix = path.suffix.lower()
@@ -185,6 +212,15 @@ def requirement_covered(requirement: str, proposal_text: str) -> bool:
     return hits >= needed
 
 
+def find_ai_flavor_hits(text: str) -> list[tuple[str, str]]:
+    hits: list[tuple[str, str]] = []
+    for pattern, label in AI_FLAVOR_PATTERNS:
+        for match in re.finditer(pattern, text):
+            snippet = normalize(text[max(0, match.start() - 20): match.end() + 40])
+            hits.append((label, snippet[:140]))
+    return hits
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Check bid proposal draft quality.")
     parser.add_argument("--workspace", required=True, help="Proposal workspace or draft file.")
@@ -215,6 +251,16 @@ def main() -> int:
                 break
 
     all_proposal = "\n".join(proposal_texts)
+
+    ai_hits = find_ai_flavor_hits(all_proposal)
+    if len(ai_hits) >= 8:
+        findings.append(("WARNING", f"{len(ai_hits)} AI-flavor/template phrases found; run human-prose rewrite pass", "human bid prose"))
+    elif len(ai_hits) >= 3:
+        findings.append(("WARNING", f"{len(ai_hits)} possible AI-flavor/template phrases found", "human bid prose"))
+
+    record_mentions = sum(all_proposal.count(word) for word in PROJECT_RECORD_WORDS)
+    if len(all_proposal) > 5000 and record_mentions < 8:
+        findings.append(("WARNING", "Long proposal text has few concrete records/forms/acceptance artifacts", "human bid prose"))
 
     requirement_files = list(iter_files(req_root, TEXT_EXTENSIONS)) if req_root.exists() else []
     requirement_text = "\n".join(read_text(path) for path in requirement_files)
@@ -263,6 +309,11 @@ def main() -> int:
         for item in missing[:30]:
             report.append(f"- {item}")
 
+    if ai_hits:
+        report.extend(["", "## Possible AI-Flavor Phrases", ""])
+        for label, snippet in ai_hits[:30]:
+            report.append(f"- {label}: {snippet}")
+
     report.extend(
         [
             "",
@@ -270,6 +321,7 @@ def main() -> int:
             "",
             "- Verify pass/fail clauses, scoring criteria, required forms, and seal/signature rules against the tender source.",
             "- Verify every certificate, case, authorization, staffing, price, date, and legal commitment with user-provided evidence.",
+            "- Rewrite repeated template openings into purchaser scenes, execution stages, responsible roles, records/forms, and acceptance outputs.",
             "- Confirm final DOCX/PDF formatting after conversion.",
         ]
     )

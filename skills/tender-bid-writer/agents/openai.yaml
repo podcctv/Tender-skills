@@ -1,4 +1,4 @@
 interface:
   display_name: "投标方案编制"
-  short_description: "审标、生成客户资料清单 Word、组织标书 Markdown，并编写厚标书正文"
-  default_prompt: "Use $tender-bid-writer to audit the tender package. If this is an outsourced bid, first produce two files: 资料清单（项目名称）.docx for client material collection and 标书组织说明（项目名称）.md for internal bid organization; then continue drafting only after materials are confirmed."
+  short_description: "审标、资料清单、标书组织、厚标书正文和真人投标语感改写"
+  default_prompt: "Use $tender-bid-writer to audit the tender package. If this is an outsourced bid, first produce 资料清单（项目名称）.docx and 标书组织说明（项目名称）.md. When drafting or revising formal chapters, remove AI-like template phrasing and write with purchaser scenes, responsible roles, process records, issue handling, and acceptance materials."

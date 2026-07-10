@@ -1,6 +1,6 @@
 ---
 name: tender-bid-writer
-description: End-to-end tender and bid proposal workflow for Chinese government, enterprise, and integration projects. Use when Codex/OpenClaw/Hermes needs to analyze bidding documents; handle outsourced/commissioned bid-writing intake with a two-file first-round package (`资料清单（项目名称）.docx` for client communication plus `标书组织说明（项目名称）.md` for the writer); classify the bid as goods-mode, software-platform-mode, hybrid-goods-software-mode, or service-mode; extract scoring criteria, qualification requirements, technical specifications, and business clauses; build a MECE proposal outline and chapter briefs; draft evaluator-ready, low-AI-flavor bid chapters with mode-appropriate thickness; merge and quality-check HTML/Markdown/DOCX outputs; simulate multi-expert bid review; iterate revisions; and prepare final delivery checklists for tender submissions.
+description: End-to-end tender and bid proposal workflow for Chinese government, enterprise, and integration projects. Use when Codex/OpenClaw/Hermes needs to analyze bidding documents; handle outsourced/commissioned bid-writing intake with a two-file first-round package (`资料清单（项目名称）.docx` for client communication plus `标书组织说明（项目名称）.md` for the writer); review an existing/current response file for missing content, blank fields, evidence gaps, signature/seal/upload risks, and client supplement requests; classify the bid as goods-mode, software-platform-mode, hybrid-goods-software-mode, or service-mode; extract scoring criteria, qualification requirements, technical specifications, and business clauses; build a MECE proposal outline and chapter briefs; draft evaluator-ready, low-AI-flavor bid chapters with mode-appropriate thickness; merge and quality-check HTML/Markdown/DOCX outputs; simulate multi-expert bid review; iterate revisions; and prepare final delivery checklists for tender submissions.
 ---
 
 # Tender Bid Writer
@@ -63,6 +63,7 @@ Treat the tender document as the source of truth. Do not invent qualifications, 
    - Draft one chapter at a time from the approved brief.
    - Prefer HTML for long technical方案 chapters that need SVG architecture diagrams, flowcharts, tables, and later DOCX conversion.
    - Follow the selected mode. For high-budget, complex, or highly competitive software-platform and hybrid projects, draft chapters as thick proposal text rather than short generic summaries: combine正文,专项措施,表格化管理工具,交付记录, and验收支撑材料. For goods-mode, do not inflate chapters with generic software/platform solution prose.
+   - For formal technical方案 or service方案 chapters, run a human-prose drafting pass using `references/human-bid-prose.md`. Replace repeated AI-like openings such as `本节围绕……展开响应` with purchaser requirement, project scene, execution stage, responsible role, process record, and acceptance/scoring output.
    - For every minimum-level section or subsection that responds to a Level 3 procurement requirement, write at least 3-5 substantive正文 paragraphs unless the selected mode or tender response form justifies a shorter table/form response. Paragraphs should cover mechanism, project scenario, execution details, records/forms, risks, and acceptance outputs, not repeat the heading in different words.
    - For outsourced bids, re-check that the source material for each claim has been received, mapped, and accepted before turning it into formal正文. Unreceived evidence should remain in the material request list, not be converted into a definitive commitment.
    - After each chapter, run a local self-check: requirement coverage, forbidden placeholders, evidence gaps, consistency with prior chapters, evaluator readability, low-AI-flavor detail, and验收可追溯性.
@@ -71,6 +72,7 @@ Treat the tender document as the source of truth. Do not invent qualifications, 
    - Merge chapters only after chapter-level checks pass.
    - Run deterministic checks with `scripts/bid_quality_check.py` when files are available.
    - Produce a QC report listing blockers, warnings, traceability gaps, mode-mismatch risks, and recommended fixes.
+   - When the user provides an already-drafted response/proposal file and asks what is missing, what must still be requested, or whether the current version can be submitted, use the current-response review workflow before polishing. Compare the current file against the tender-required forms, qualification items, price fields, evidence attachments, signatures/seals, scan clarity, and submission rules. Output a current-version review report and client supplement list instead of rewriting the whole bid.
 
 8. **Expert review simulation**
    - Review from at least five perspectives when the bid is substantial: compliance officer, technical architect, scoring evaluator, delivery/operations lead, and commercial/legal reviewer.
@@ -87,6 +89,8 @@ Treat the tender document as the source of truth. Do not invent qualifications, 
 - Read `references/workflow.md` for the detailed article-inspired process, output files, and stage gates.
 - Read `references/checklists.md` when extracting requirements, writing briefs, or running expert review.
 - Read `references/material-collection-design.md` when producing outsourced pre-audit packages, client-facing material request lists, tender-native fill-in packages, or when the user provides a prior material checklist/template to reuse as a format or logic reference.
+- Read `references/current-response-review.md` when reviewing an existing/current response file, checking missing content, blank fields, attached evidence, signatures/seals, upload readiness, or client supplement requests.
+- Read `references/human-bid-prose.md` when drafting or revising formal technical方案, service方案, implementation, quality, acceptance, operations, or food/goods/service履约 chapters and the user complains about AI flavor, template language, or流水账.
 - Read `references/platform-compatibility.md` when installing or adapting this skill for Codex, OpenClaw, or Hermes.
 - Use `scripts/bid_quality_check.py` for local proposal checks when draft files exist.
 
@@ -215,6 +219,8 @@ Use these rules whenever drafting formal bid chapters, especially for software-p
 - Keep minimum sections substantial. Each smallest formal正文 section should normally contain at least 3-5 paragraphs with real content; use fewer for goods-mode parameter responses, fixed forms, compliance statements, or tender-mandated short responses. Do not use a single paragraph or a thin table as a substitute for a response that evaluators must score.
 - Plan the full proposal by page count, not only by section list. If the tender has no hard page cap, use `RMB 10,000 contract value ≈ 1 proposal page` as the baseline for software-platform and complex hybrid bids, then adjust upward for complex systems, many scoring items, integration difficulty, data migration, demonstrations, or heavy acceptance obligations. For substantial software-platform and complex hybrid projects, the technical/business proposal should generally not fall below 300-500 pages; for goods-mode, page count is driven by parameter/evidence completeness rather than long prose; for service-mode, scale by SLA complexity, staffing, records, and assessment requirements.
 - Reduce AI flavor. Avoid repeated slogan-like symmetric phrases such as "全过程、全链路、全角色、全闭环". Use concrete project scenes, business objects, data flows, interface joint debugging, role collaboration, quality records, issue handling, acceptance materials, and procurement-side coordination details.
+- Do not use a repeated chapter-opening template. Avoid opening many subsections with `本节围绕`, `本章节将从`, `围绕……展开响应`, or similar phrasing. Open with the tender requirement, purchaser scene, implementation risk, operating record, or acceptance point instead.
+- Convert abstract verbs into executable bid language. `建立机制` must become who establishes it, when it runs, what form/ledger records it, who reviews it, and how it supports scoring or acceptance. `闭环管理` must become the actual path: problem registration, owner assignment, rectification, review, purchaser confirmation, and archive.
 - Prefer the structure `机制 + 场景 + 表单 + 输出成果`:
   - 机制: explain the management method and responsible role.
   - 场景: explain how it applies to this project's business or technical boundary.
@@ -245,6 +251,7 @@ After each formal chapter, review and revise before moving on:
 - Identify unsupported claims and either remove them, tie them to evidence, or reference the formal attachment/chapter where evidence is provided.
 - Remove draft traces, placeholders, internal review wording, and fabricated evidence.
 - Check that the chapter fits this project rather than a generic template, including business scenes, platform boundaries, data/interface/control details, and purchaser collaboration.
+- Run the human-prose check from `references/human-bid-prose.md`: repeated section openings, slogan density, abstract claims without owner/stage/record, and paragraphs that cannot be executed or accepted must be rewritten before moving on.
 - Check that each minimum-level formal正文 section has at least 3-5 substantive paragraphs unless `goods-mode`, a tender form, or a fixed response table justifies shorter treatment.
 - Confirm every major commitment has a verifiable output: ledger, checklist, meeting minutes, test report, trial-run record, migration record, issue record, acceptance mapping, or delivery document.
 - Check consistency with other chapters for scope, schedule, roles, deliverables, service commitments, and acceptance criteria.

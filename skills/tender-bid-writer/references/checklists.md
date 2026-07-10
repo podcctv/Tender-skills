@@ -50,6 +50,8 @@ Blocker checks:
 - Missing response to a mandatory or scored requirement
 - Unsupported qualification, certificate, case, authorization, staffing, or product claim
 - Tender deadline, submission format, seal/signature, or form requirement omitted
+- Current response file review misses blank quotation, blank mandatory form fields, unfilled dates, missing contact/bank/person fields, unresolved authorization identity, absent signature/seal, or unclear uploaded scan risks
+- Embedded certificate, screenshot, contract, ID, deposit voucher, or license treated as compliant without checking clarity, orientation, entity consistency, expiry, and completeness
 - Outsourced first-round output scattered into many client-facing files instead of the required Word material list plus internal Markdown organization file
 - Client-facing Word document exposes internal-only notes, unsupported claims, or writer-control placeholders
 - Electronic bid treated like a paper bid, or paper bid treated like an electronic-only upload
@@ -61,6 +63,9 @@ Blocker checks:
 Warning checks:
 
 - Repeated generic prose without evaluator-specific value
+- Repeated AI-like openings such as `本节围绕`, `本章节将从`, or `围绕……展开响应`
+- Slogan-heavy expressions such as `全过程`, `全链路`, `全角色`, `全闭环`, `建立健全机制`, or `切实保障` that are not converted into owner, stage, record, and acceptance output
+- Paragraphs that do not name any project scene, role, record/form, issue handling path, or acceptance material
 - Long sections that do not map to scoring criteria
 - Weak evidence matrix or missing attachment reference
 - Unclear ownership, timeline, acceptance method, or risk control
