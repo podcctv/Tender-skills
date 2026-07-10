@@ -305,6 +305,17 @@ Use $tender-bid-writer to analyze this tender package and produce the requiremen
 使用 $tender-bid-writer 分析这个招标文件，先抽取评分标准、资格要求、技术参数和商务条款。
 ```
 
+### Windows LibreOffice 渲染修复
+
+如果调用文档类 skill 渲染 Word/DOCX 时出现 LibreOffice 启动失败、`bootstrap.ini` 损坏、`libpng error: Write Error` 或 `pdf2image` 找不到 Poppler，可执行本仓库附带的修复脚本。该脚本会修补 Codex 文档渲染脚本在 Windows 下传给 LibreOffice 的临时用户配置 URI，并让 `pdf2image` 直接使用 bundled Poppler。
+
+```powershell
+$py = "$env:USERPROFILE\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe"
+& $py ".\skills\tender-bid-writer\scripts\patch_codex_render_docx_windows.py"
+```
+
+脚本会自动定位 `~\.codex\plugins\cache` 下的 `render_docx.py`，修改前会生成带时间戳的 `.bak-YYYYMMDD-HHMMSS` 备份；如果已经修好，会输出 `already ok`。
+
 ### 方式二：在当前工作区显式引用
 
 如果不想安装到全局目录，可以保留本仓库结构，并在提示词中说明：
