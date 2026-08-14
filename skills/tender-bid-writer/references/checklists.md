@@ -22,6 +22,8 @@ Use this table shape for extracted requirements:
 - Required response forms, seals, signatures, copies, file formats
 - Submission mode: `electronic-bid`, `paper-bid`, or `dual-bid`
 - Outsourced first-round deliverables: `资料清单（项目名称）.docx` for the client and `标书组织说明（项目名称）.md` for the writer
+- Chapter structure balance: light/standard/priority/excellence-topic classification, 2-6 sibling heading variation, and mixed Heading 4/5/6 leaf depths for thick chapters
+- Six excellence topics when relevant: data consistency checking, interface joint debugging, old/new system parallel running, cutover drill, business rollback, and transition-period operations
 - Electronic bid details: platform account, CA/digital certificate, electronic seal/signature authority, upload operator, file format/size, encryption, decryption, online sign-in/opening contact, upload deadline
 - Paper bid details: handwritten signature, company seal, page/cross-page seal, original/copy quantities, binding, envelope label/seal, delivery address/person/deadline
 - Tender-native Word/DOCX forms that must be reproduced as Word tables in the client material collection package
@@ -64,12 +66,16 @@ Warning checks:
 
 - Repeated generic prose without evaluator-specific value
 - Repeated AI-like openings such as `本节围绕`, `本章节将从`, or `围绕……展开响应`
-- Slogan-heavy expressions such as `全过程`, `全链路`, `全角色`, `全闭环`, `建立健全机制`, or `切实保障` that are not converted into owner, stage, record, and acceptance output
+- Slogan-heavy expressions such as `本项目属于`, `围绕`, `项目经理会`, `从以往经验看`, `全过程`, `全链路`, `全角色`, `全闭环`, `建立健全机制`, or `切实保障` that are not converted into matter, scene, owner, stage, record, and acceptance output
+- Mechanical headings such as `控制要点1`, `细化核查1`, or `接口联调控制要点1`
 - Paragraphs that do not name any project scene, role, record/form, issue handling path, or acceptance material
 - Long sections that do not map to scoring criteria
 - Weak evidence matrix or missing attachment reference
 - Unclear ownership, timeline, acceptance method, or risk control
 - Diagram or table lacks direct connection to requirements
+- Major chapter lacks at least one useful process/flow diagram and one evaluative table without a tender-format reason
+- Word finalization manually types heading numbering instead of using the `投标文档格式.docx` master template, Heading 1-9 / `TB_01`-`TB_09`, and `TB表格`
+- Major chapters are not output as separate DOCX files under `分章节定稿`
 
 ## Expert Review Scorecard
 

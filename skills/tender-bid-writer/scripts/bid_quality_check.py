@@ -67,9 +67,13 @@ REQUIREMENT_HINTS = [
 ]
 
 AI_FLAVOR_PATTERNS = [
+    (r"本项目属于[^。；;]{0,80}", "fixed project-classification opening"),
     (r"本节围绕[^。；;]{0,80}(展开|进行|阐述|响应)", "repeated section-opening template"),
     (r"本章节?将从[^。；;]{0,80}(方面|维度|角度)", "chapter preview filler"),
     (r"围绕[^。；;]{0,80}(展开响应|开展工作|进行说明)", "around-topic filler"),
+    (r"项目经理会[^。；;]{0,80}", "template project-manager claim"),
+    (r"从以往经验看[^。；;]{0,80}", "generic past-experience filler"),
+    (r"(控制要点|细化核查|接口联调控制要点)\s*[0-9一二三四五六七八九十]+", "mechanical numbered heading"),
     (r"全(过程|链路|角色|闭环|维度|场景|周期)", "slogan-like 全* phrase"),
     (r"建立健全[^。；;]{0,30}机制", "abstract mechanism claim"),
     (r"(切实保障|有效提升|全面推进|不断完善|充分发挥|持续优化)", "generic official-sounding verb"),
@@ -91,6 +95,34 @@ PROJECT_RECORD_WORDS = [
     "整改",
     "交付",
     "归档",
+]
+
+EXCELLENCE_TOPIC_WORDS = [
+    "数据一致性校验",
+    "接口联调",
+    "新旧系统并行运行",
+    "切换演练",
+    "业务回退",
+    "过渡期运维",
+]
+
+FLOWCHART_WORDS = [
+    "流程图",
+    "流程如下",
+    "mermaid",
+    "graph TD",
+    "sequenceDiagram",
+]
+
+TABLE_WORDS = [
+    "职责矩阵",
+    "风险台账",
+    "验收映射",
+    "接口清单",
+    "数据校验",
+    "问题分级",
+    "交付材料",
+    "检查表",
 ]
 
 
@@ -262,6 +294,18 @@ def main() -> int:
     if len(all_proposal) > 5000 and record_mentions < 8:
         findings.append(("WARNING", "Long proposal text has few concrete records/forms/acceptance artifacts", "human bid prose"))
 
+    excellence_hits = [word for word in EXCELLENCE_TOPIC_WORDS if word in all_proposal]
+    if any(word in all_proposal for word in ("数据迁移", "系统切换", "平台", "接口", "集成")):
+        if len(excellence_hits) < 3:
+            findings.append(("WARNING", "Complex platform/integration text mentions related work but covers few of the six excellence topics", "chapter structure"))
+
+    flow_mentions = sum(all_proposal.count(word) for word in FLOWCHART_WORDS)
+    table_mentions = sum(all_proposal.count(word) for word in TABLE_WORDS)
+    if len(all_proposal) > 8000 and flow_mentions < 1:
+        findings.append(("WARNING", "Long chapter/proposal text appears to lack a process or flow diagram", "chapter structure"))
+    if len(all_proposal) > 8000 and table_mentions < 2:
+        findings.append(("WARNING", "Long chapter/proposal text has few scoring/acceptance-oriented tables", "chapter structure"))
+
     requirement_files = list(iter_files(req_root, TEXT_EXTENSIONS)) if req_root.exists() else []
     requirement_text = "\n".join(read_text(path) for path in requirement_files)
     requirements = split_requirement_lines(requirement_text)
@@ -322,6 +366,8 @@ def main() -> int:
             "- Verify pass/fail clauses, scoring criteria, required forms, and seal/signature rules against the tender source.",
             "- Verify every certificate, case, authorization, staffing, price, date, and legal commitment with user-provided evidence.",
             "- Rewrite repeated template openings into purchaser scenes, execution stages, responsible roles, records/forms, and acceptance outputs.",
+            "- Check chapter structure balance: light chapters stay concise, priority topics go deeper,正文 sits under leaf headings, and same-level heading counts are not mechanically uniform.",
+            "- Check each major chapter has a useful flowchart and table, and final DOCX chapters use the master template, Heading 1-9/TB styles, and sortable files under 分章节定稿.",
             "- Confirm final DOCX/PDF formatting after conversion.",
         ]
     )
