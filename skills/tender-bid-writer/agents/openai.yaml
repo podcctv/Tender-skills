@@ -1,4 +1,4 @@
 interface:
   display_name: "投标方案编制"
-  short_description: "从招标文件提取需求，生成厚标书正文，降 AI 味并完成质检评审"
-  default_prompt: "Use $tender-bid-writer to extract requirements from a tender package, draft the bid technical proposal, run QC, and prepare the delivery checklist."
+  short_description: "判断投标模式，抽取三级需求，按厚标书标准逐章编写，降 AI 味，脚本质检与多专家评审"
+  default_prompt: "Use $tender-bid-writer to classify the bid mode, extract three-level requirements from the tender package, draft evaluator-ready chapters, run bid_quality_check.py, and prepare the delivery checklist."

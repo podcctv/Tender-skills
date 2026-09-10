@@ -18,16 +18,20 @@ Do not skip these gates on real bids:
 3. **Outline/brief gate**
    - Create a MECE chapter outline.
    - Map each scored and mandatory requirement to a chapter, section, evidence item, or attachment.
+   - Fill the Page Budget Worksheet (see `checklists.md`) and record a target page count per chapter in its brief.
    - Write per-chapter briefs. Do not start large-scale drafting until the outline and briefs are accepted.
 
 4. **Chapter drafting gate**
-   - Draft one chapter per file under `03_chapters/`.
+   - Draft one chapter per file under `03_chapters/`, starting from the HTML template in `templates.md`.
+   - Apply the style rules from `references/writing-style.md`: mechanism + scenario + form + output structure, no AI-flavor slogans, no blacklisted buzzwords.
    - Use HTML when the chapter benefits from SVG diagrams, architecture maps, timelines, workflow figures, or complex tables.
    - End each chapter with a self-check summary: covered requirements, assumptions, evidence gaps, and recommended follow-up.
 
 5. **Merge/QC gate**
    - Merge only checked chapters.
-   - Run script-level checks when files exist.
+   - Run script-level checks when files exist:
+     `python3 scripts/bid_quality_check.py --workspace <ws> --proposal <ws>/03_chapters --requirements <ws>/01_requirements --target-pages <budget> --out <ws>/05_qc/qc_report.md --json <ws>/05_qc/qc_report.json`
+   - The script flags placeholder traces, thin sections, AI-flavor slogans, cross-chapter duplication, page-budget deviation, requirement coverage gaps, and evidence density. Fix each finding by rewriting toward concrete mechanisms and project scenarios, not by rewording.
    - Manually verify the highest-risk items: scoring criteria, qualifications, non-deviation clauses, and required forms.
 
 6. **Expert review gate**
@@ -65,7 +69,8 @@ Use these names unless the user or project already has conventions:
 
 - Lead with direct compliance language, then explain method and evidence.
 - Tie each important paragraph to a tender requirement or scoring point.
-- Use tables for parameter response, staffing, schedule, risk controls, service commitments, and evidence.
+- Follow `references/writing-style.md` for the full AI-flavor blacklist, paragraph patterns, and per-mode skeletons.
+- Use tables from `references/templates.md` (scoring response matrix, parameter response, deviation, SLA, responsibility matrix, risk register, acceptance mapping) instead of inventing table shapes.
 - Use diagrams only when they clarify architecture, process, organization, data flow, deployment, or schedule.
 - Keep every unverified claim visibly marked until evidence is supplied.
 

@@ -15,6 +15,8 @@ skills/
     references/
       workflow.md
       checklists.md
+      writing-style.md
+      templates.md
       platform-compatibility.md
     scripts/
       bid_quality_check.py
@@ -23,7 +25,9 @@ skills/
 - `SKILL.md`：skill 主入口，定义触发场景和执行流程。
 - `agents/openai.yaml`：Codex/OpenAI 系产品可读取的 UI 元数据。
 - `references/workflow.md`：投标全流程、阶段门和推荐产物结构。
-- `references/checklists.md`：需求台账、章节 brief、质检、专家评审模板。
+- `references/checklists.md`：否决项（废标）清单、需求台账、章节 brief、页数预算工作表、质检、专家评审与签章交付清单。
+- `references/writing-style.md`：降 AI 味写作指南，含黑话黑名单、段落结构模板、分模式写作骨架、章节自检十问。
+- `references/templates.md`：HTML 章节模板、合稿转 DOCX 指引、评分响应矩阵等八类标准表格库。
 - `references/platform-compatibility.md`：Codex、OpenClaw、Hermes 适配说明。
 - `scripts/bid_quality_check.py`：可选的本地质检脚本。
 
@@ -56,6 +60,17 @@ skills/
 - 最小正式正文小节通常不少于 `3-5 段`。货物标参数响应、固定格式表、符合性声明或招标要求短答除外。每段应有机制、场景、执行细节、表单记录、风险控制或验收支撑，不能只换说法重复标题。
 - 表格必须服务评审和落地，例如需求响应矩阵、接口联调检查表、数据质量检查表、风险预防表、交付文档清单、验收映射表。
 - 正式章节不得出现 `TODO`、`待确认`、`公司名称`、`项目名称：填写`、`如有证据再补` 等内部草稿痕迹。
+
+## 降 AI 味写作与标准表格
+
+详细规则见 `references/writing-style.md` 和 `references/templates.md`，要点：
+
+- 禁用互联网黑话：赋能、抓手、拉通、颗粒度、打法、组合拳、底层逻辑等。
+- 限制对称排比："全过程、全链路、全方位"三连句式一律改写为具体机制（谁负责、什么频次、形成什么记录）。
+- 段落按 `机制 + 场景 + 表单 + 输出成果` 四件套展开，每个三级需求一个主响应位置。
+- "优于"靠加码事实表达：流程加细、时限加严、范围加宽、证据加厚，不靠形容词。
+- 高频表格全部模板化：评分响应矩阵、技术参数响应表、偏离表、SLA 承诺表、责任矩阵、风险登记表、验收映射表。
+- 章节写完过"自检十问"，包括"删掉本章会扣哪些分""是否有连续 3 段未出现本项目业务名词"。
 
 ## 四种投标模式
 
@@ -343,10 +358,26 @@ Use tender-bid-writer to build a MECE proposal outline, create chapter briefs, a
 
 `scripts/bid_quality_check.py` 是一个无第三方依赖的辅助脚本，可以扫描草稿中的明显风险：
 
-- `TODO`、`TBD`、`待补充`、`待确认` 等占位符。
-- 过短章节。
-- 需求文件和方案正文之间的覆盖缺口。
-- 证书、资质、授权、案例、人员等证据引用不足。
+- 草稿痕迹与占位符：`TODO`、`待补充`、`公司名称：填写`、`【待填写】` 等（精确匹配模板痕迹，正式正文中合法出现的"项目名称为…"不会误报）。
+- 薄弱小节：标题下少于 2 段或 200 字且无表格的正式小节。
+- AI 味检测：互联网黑话（赋能、抓手、颗粒度等）、口号词密度（全过程、闭环等）、"全X、全Y"式对称排比。
+- 复制粘贴：跨章节共享的大段相同文字，以及同一文件内自我重复。
+- 页数预算：按字数估算页数，配合 `--target-pages` 检查是否达到厚标书目标。
+- 需求覆盖缺口：需求台账与方案正文之间的覆盖差异。
+- 证据密度：需求要求证书/案例/授权时，检查正文证据引用是否充分。
+
+参数说明：
+
+| 参数 | 说明 |
+| --- | --- |
+| `--workspace` | 工作区根目录（必填） |
+| `--proposal` | 方案草稿文件或目录，默认工作区 |
+| `--requirements` | 需求台账文件或目录，默认 `01_requirements` |
+| `--target-pages` | 目标页数，用于页数预算检查 |
+| `--chars-per-page` | 每页折算中文字数，默认 900 |
+| `--out` | 输出 Markdown 报告路径 |
+| `--json` | 输出机器可读 JSON 报告路径（供 agent 二次处理） |
+| `--fail-on-warning` | 有 WARNING 时退出码置 1 |
 
 示例：
 
@@ -355,7 +386,9 @@ python skills/tender-bid-writer/scripts/bid_quality_check.py \
   --workspace ./my-bid-workspace \
   --proposal ./my-bid-workspace/03_chapters \
   --requirements ./my-bid-workspace/01_requirements \
-  --out ./my-bid-workspace/05_qc/qc_report.md
+  --target-pages 400 \
+  --out ./my-bid-workspace/05_qc/qc_report.md \
+  --json ./my-bid-workspace/05_qc/qc_report.json
 ```
 
 脚本只做机器粗筛，不能替代人工复核。正式投标前必须人工核对否决项、评分标准、格式要求、签章要求和所有证据材料。

@@ -26,7 +26,7 @@ Treat the tender document as the source of truth. Do not invent qualifications, 
 2. **Bid type mode classification**
    - Before extracting requirements or outlining, classify the bid into exactly one primary mode: `goods-mode`, `software-platform-mode`, `hybrid-goods-software-mode`, or `service-mode`.
    - Record the classification basis from tender language, procurement object, scoring items, deliverables, evidence requirements, and acceptance method.
-   - If the project includes both product supply and non-trivial software/platform/service implementation, default to `hybrid-goods-software-mode` and split the response into tracks instead of mixing product parameters with platform方案.
+   - If the project includes both product supply and non-trivial software/platform/service implementation, default to `hybrid-goods-software-mode` and split the response into tracks instead of mixing product parameters with platform response.
    - Let the selected mode control requirement extraction, evidence matrices, outline structure, page budget, drafting density, table design, and QC rules.
 
 3. **Requirement extraction**
@@ -35,7 +35,7 @@ Treat the tender document as the source of truth. Do not invent qualifications, 
    - Extract mode-specific ledgers:
      - `goods-mode`: parameter response, brand/model/specification, product evidence, deviation, authorization, warranty, delivery, installation, commissioning, training, and acceptance.
      - `software-platform-mode`: business understanding, system boundary, function module, architecture, data, interface, security, migration, implementation, demonstration, acceptance, and operations.
-     - `hybrid-goods-software-mode`: product response track, software/platform方案 track, and integration delivery track.
+     - `hybrid-goods-software-mode`: product response track, software/platform track, and integration delivery track.
      - `service-mode`: service scope, staffing, SLA/KPI, workflow, records, tools, escalation, transition, training, assessment, and acceptance.
    - Preserve exact source anchors where possible: file name, page, section, table row, or clause number.
    - Classify each requirement as `mandatory`, `scored`, `contractual`, `format`, or `evidence`.
@@ -44,19 +44,22 @@ Treat the tender document as the source of truth. Do not invent qualifications, 
 4. **Outline and chapter briefs**
    - Build a MECE outline that maps every scored and mandatory requirement to exactly one primary response location.
    - Write a brief for every chapter before drafting: bid type mode, chapter goal, source requirements, three-level procurement-demand mapping, claims allowed, evidence needed, diagrams/tables, and acceptance checks.
-   - Create an overall page budget before drafting. Unless the tender document imposes a strict page limit, estimate the full proposal thickness by project value, scoring method, and selected mode. Use about 1 proposal page per RMB 10,000 as a practical baseline for software-platform and complex hybrid bids; apply goods-mode and service-mode adjustments from the mode rules.
+   - Create an overall page budget before drafting. Unless the tender document imposes a strict page limit, estimate the full proposal thickness by project value, scoring method, and selected mode. Use about 1 proposal page per RMB 10,000 as a practical baseline for software-platform and complex hybrid bids; apply goods-mode and service-mode adjustments from the mode rules. Record the budget with the Page Budget Worksheet in `references/checklists.md` and verify it later with `scripts/bid_quality_check.py --target-pages`.
+   - Maintain a scoring response matrix (scoring item, rubric text, points, response chapter, satisfy/beat strategy, evidence, status) alongside the outline; every scored point must land in exactly one chapter.
    - Ask for human confirmation before full drafting when the outline controls compliance or a large document.
 
 5. **Draft chapters**
    - Draft one chapter at a time from the approved brief.
-   - Prefer HTML for long technical方案 chapters that need SVG architecture diagrams, flowcharts, tables, and later DOCX conversion.
-   - Follow the selected mode. For high-budget, complex, or highly competitive software-platform and hybrid projects, draft chapters as thick proposal text rather than short generic summaries: combine正文,专项措施,表格化管理工具,交付记录, and验收支撑材料. For goods-mode, do not inflate chapters with generic software/platform solution prose.
-   - For every minimum-level section or subsection that responds to a Level 3 procurement requirement, write at least 3-5 substantive正文 paragraphs unless the selected mode or tender response form justifies a shorter table/form response. Paragraphs should cover mechanism, project scenario, execution details, records/forms, risks, and acceptance outputs, not repeat the heading in different words.
-   - After each chapter, run a local self-check: requirement coverage, forbidden placeholders, evidence gaps, consistency with prior chapters, evaluator readability, low-AI-flavor detail, and验收可追溯性.
+   - Prefer HTML for long technical chapters that need SVG architecture diagrams, flowcharts, tables, and later DOCX conversion; start from the chapter template in `references/templates.md`.
+   - Follow the style rules in `references/writing-style.md`: build paragraphs as mechanism + scenario + form + output, avoid AI-flavor slogans and internet buzzwords, and express "better than required" through harder deadlines, finer process, wider scope, or thicker evidence instead of adjectives.
+   - Follow the selected mode. For high-budget, complex, or highly competitive software-platform and hybrid projects, draft chapters as thick proposal text rather than short generic summaries: combine substantive prose, special-topic controls, managed tables, delivery records, and acceptance-support materials. For goods-mode, do not inflate chapters with generic software/platform solution prose.
+   - For every minimum-level section or subsection that responds to a Level 3 procurement requirement, write at least 3-5 substantive paragraphs unless the selected mode or tender response form justifies a shorter table/form response. Paragraphs should cover mechanism, project scenario, execution details, records/forms, risks, and acceptance outputs, not repeat the heading in different words.
+   - After each chapter, run a local self-check: requirement coverage, forbidden placeholders, evidence gaps, consistency with prior chapters, evaluator readability, low-AI-flavor detail, and acceptance traceability.
 
 6. **Merge and quality check**
    - Merge chapters only after chapter-level checks pass.
-   - Run deterministic checks with `scripts/bid_quality_check.py` when files are available.
+   - Run deterministic checks with `scripts/bid_quality_check.py` when files are available. The script scans for placeholder/draft traces, thin sections, AI-flavor slogans and buzzwords, cross-chapter and self duplication, page-budget deviation (`--target-pages`), requirement coverage gaps, and evidence density; `--json` emits machine-readable results for further processing.
+   - Fix every finding by rewriting toward concrete mechanisms, project scenarios, forms, and outputs; do not just reword the flagged sentence.
    - Produce a QC report listing blockers, warnings, traceability gaps, mode-mismatch risks, and recommended fixes.
 
 7. **Expert review simulation**
@@ -72,7 +75,9 @@ Treat the tender document as the source of truth. Do not invent qualifications, 
 ## Resource Loading
 
 - Read `references/workflow.md` for the detailed article-inspired process, output files, and stage gates.
-- Read `references/checklists.md` when extracting requirements, writing briefs, or running expert review.
+- Read `references/checklists.md` when extracting requirements, writing briefs, planning the page budget, or running expert review. It includes the disqualification (veto) checklist, page budget worksheet, and final delivery checklist.
+- Read `references/writing-style.md` before and while drafting any formal chapter: AI-flavor blacklist, paragraph patterns, per-mode skeletons, and the ten-question chapter self-check.
+- Read `references/templates.md` when producing HTML chapters, converting to DOCX, or building standard tables (scoring response matrix, parameter response, deviation, SLA, responsibility matrix, risk register, acceptance mapping).
 - Read `references/platform-compatibility.md` when installing or adapting this skill for Codex, OpenClaw, or Hermes.
 - Use `scripts/bid_quality_check.py` for local proposal checks when draft files exist.
 
@@ -82,16 +87,16 @@ Always classify the bid before outlining. The mode is a control variable, not a 
 
 | Mode | Use when | Core materials | Writing thickness |
 | --- | --- | --- | --- |
-| `goods-mode` | The object is equipment, hardware, standard products, finished software, consumables, instruments, or other off-the-shelf goods. | Product brochure, model/spec sheet, test report, manufacturer authorization, certificate, parameter response table, deviation table, warranty, delivery/installation plan. | Most fixed. Prioritize parameters, evidence, traceability, deviation control, delivery, installation, warranty, and acceptance. Do not create bloated generic方案 chapters. |
+| `goods-mode` | The object is equipment, hardware, standard products, finished software, consumables, instruments, or other off-the-shelf goods. | Product brochure, model/spec sheet, test report, manufacturer authorization, certificate, parameter response table, deviation table, warranty, delivery/installation plan. | Most fixed. Prioritize parameters, evidence, traceability, deviation control, delivery, installation, warranty, and acceptance. Do not create bloated generic solution chapters. |
 | `software-platform-mode` | The object is custom development, system integration, data middle platform, business platform, AI capability center, operations platform, or software-intensive service. | Requirement analysis, architecture, function design, business flow, data/interface/security, implementation, migration, testing, demonstration, acceptance, operations. | Thickest. Expand by function, scenario, data object, interface, workflow, risk, record, and acceptance mapping. |
-| `hybrid-goods-software-mode` | The object combines hardware/standard products with platform development, system integration, deployment, operations, or service delivery. | Product parameter evidence plus software/platform方案 plus integrated deployment, joint debugging, test, training, trial-run, and acceptance records. | Split into tracks. Keep product response, software方案, and integration delivery separately traceable. |
+| `hybrid-goods-software-mode` | The object combines hardware/standard products with platform development, system integration, deployment, operations, or service delivery. | Product parameter evidence plus software/platform response plus integrated deployment, joint debugging, test, training, trial-run, and acceptance records. | Split into tracks. Keep product response, software response, and integration delivery separately traceable. |
 | `service-mode` | The object is operations, maintenance, consulting, planning, training, assessment, data governance, testing, supervision, or other human/process/service-heavy work without major product supply or platform development. | Service scope, staffing, role matrix, SLA/KPI, workflow, tools, records, escalation, reports, training, transition, assessment, and acceptance. | Medium to thick depending on SLA and scoring. Focus on people, process, records, KPI, risk, and acceptance rather than product parameters or software architecture. |
 
 Mode rules:
 
-- For `goods-mode`, build the proposal around `参数响应表 + 产品证据矩阵 + 偏离表 + 厂家/材料追溯 + 供货安装调试方案 + 售后质保方案 + 验收交付清单`.正文 should support evidence and履约, not replace parameter proof. A thin but complete parameter/evidence response is better than a long generic architecture chapter.
+- For `goods-mode`, build the proposal around `参数响应表 + 产品证据矩阵 + 偏离表 + 厂家/材料追溯 + 供货安装调试方案 + 售后质保方案 + 验收交付清单`. Prose should support evidence and contract performance, not replace parameter proof. A thin but complete parameter/evidence response is better than a long generic architecture chapter.
 - For `software-platform-mode`, use the thick proposal rules aggressively. Every important function should explain business scenario, user role, process, data object, interface relation, permission/security, exception handling, testing, demonstration point, delivery artifact, and acceptance mapping.
-- For `hybrid-goods-software-mode`, create three parallel ledgers and outlines: product response track, software/platform方案 track, and integration delivery track. Add a responsibility matrix that connects equipment installation, software deployment, interface joint debugging, system test, training, trial run, and final acceptance.
+- For `hybrid-goods-software-mode`, create three parallel ledgers and outlines: product response track, software/platform track, and integration delivery track. Add a responsibility matrix that connects equipment installation, software deployment, interface joint debugging, system test, training, trial run, and final acceptance.
 - For `service-mode`, write around service outcomes: service catalog, staffing model, shift/response mechanism, SLA/KPI, tools and records, issue escalation, report rhythm, assessment method, knowledge transfer, continuity, and acceptance. Do not force service bids into product parameter tables or software architecture chapters.
 - If tender language conflicts with mode assumptions, obey the tender. A fixed response table, page cap, or mandatory format overrides thickness defaults.
 - If the project looks like工程施工 or pure construction, report that the skill can support requirement extraction and review, but施工组织设计,工程量清单,安全文明施工, and construction-specific scheduling may require a separate construction-bid workflow.
@@ -100,10 +105,10 @@ Mode rules:
 
 Use these rules whenever drafting formal bid chapters, especially for software-platform or complex hybrid projects above RMB 30 million, multi-system platform projects, substantial service projects, or scoring language such as `完全满足且优于项目需求`. Adjust thickness by bid type mode.
 
-- Map the tender source into the正文. Connect scoring items, procurement needs, technical parameters, business clauses, deliverables, and acceptance requirements to specific response content. Avoid abstract promises such as "建立机制" or "加强管理" unless the text states how the mechanism runs, who is responsible, when it is executed, what records are formed, and how those records support acceptance.
-- Break procurement-demand content into a stable three-level hierarchy. Level 1 should identify the requirement domain, platform, service area, or management theme; Level 2 should identify the concrete function, service task, control object, or deliverable group; Level 3 should identify the smallest response unit that can be written, checked, evidenced, and accepted. Use Level 3 items as the minimum units for正文 drafting, tables, and acceptance mapping.
-- Match length and density to project complexity and selected mode. Do not leave major software-platform, service, or hybrid方案 chapters at a 5,000-10,000 character overview level when the full bid target is a thick technical volume. Expand with专项控制内容,流程细则,检查表,台账模板,风险预防措施,阶段门禁,交付记录, and验收映射表.
-- Keep minimum sections substantial. Each smallest formal正文 section should normally contain at least 3-5 paragraphs with real content; use fewer for goods-mode parameter responses, fixed forms, compliance statements, or tender-mandated short responses. Do not use a single paragraph or a thin table as a substitute for a response that evaluators must score.
+- Map the tender source into the response content. Connect scoring items, procurement needs, technical parameters, business clauses, deliverables, and acceptance requirements to specific response content. Avoid abstract promises such as "建立机制" or "加强管理" unless the text states how the mechanism runs, who is responsible, when it is executed, what records are formed, and how those records support acceptance.
+- Break procurement-demand content into a stable three-level hierarchy. Level 1 should identify the requirement domain, platform, service area, or management theme; Level 2 should identify the concrete function, service task, control object, or deliverable group; Level 3 should identify the smallest response unit that can be written, checked, evidenced, and accepted. Use Level 3 items as the minimum units for drafting, tables, and acceptance mapping.
+- Match length and density to project complexity and selected mode. Do not leave major software-platform, service, or hybrid chapters at a 5,000-10,000 character overview level when the full bid target is a thick technical volume. Expand with special-topic controls, procedure details, checklists, ledger templates, risk prevention measures, stage gates, delivery records, and acceptance mapping tables.
+- Keep minimum sections substantial. Each smallest formal section should normally contain at least 3-5 paragraphs with real content; use fewer for goods-mode parameter responses, fixed forms, compliance statements, or tender-mandated short responses. Do not use a single paragraph or a thin table as a substitute for a response that evaluators must score.
 - Plan the full proposal by page count, not only by section list. If the tender has no hard page cap, use `RMB 10,000 contract value ≈ 1 proposal page` as the baseline for software-platform and complex hybrid bids, then adjust upward for complex systems, many scoring items, integration difficulty, data migration, demonstrations, or heavy acceptance obligations. For substantial software-platform and complex hybrid projects, the technical/business proposal should generally not fall below 300-500 pages; for goods-mode, page count is driven by parameter/evidence completeness rather than long prose; for service-mode, scale by SLA complexity, staffing, records, and assessment requirements.
 - Reduce AI flavor. Avoid repeated slogan-like symmetric phrases such as "全过程、全链路、全角色、全闭环". Use concrete project scenes, business objects, data flows, interface joint debugging, role collaboration, quality records, issue handling, acceptance materials, and procurement-side coordination details.
 - Prefer the structure `机制 + 场景 + 表单 + 输出成果`:
@@ -112,10 +117,10 @@ Use these rules whenever drafting formal bid chapters, especially for software-p
   - 表单: identify the ledger, checklist, meeting minutes, test record, migration record, or acceptance mapping used to freeze the process.
   - 输出成果: state the material that supports evaluation, implementation, delivery, and acceptance.
 - For project-understanding chapters, avoid broad policy boilerplate. Build a thick, evaluator-ready narrative from `政策背景 -> 采购人定位 -> 项目建设目标 -> 业务现状理解 -> 信息化现状判断 -> 痛点归纳 -> 建设必要性 -> 价值链/业务链分析 -> response strategy`. Use tender language first, then carefully infer business implications; do not invent purchaser internal data.
-- For platform software projects, write project-specific专项方案 instead of generic software engineering. Cover relevant boundaries such as生产服务平台,流通服务平台,交易服务平台,数据中台,AI能力中心,电子合同,质量追溯,接口联调,数据迁移,主数据管理,业务连续性,演示功能. For each专项, state quality risks, control focus, inspection method, and output results.
-- Make tables evaluative, not decorative. Use tables only when they support scoring or implementation control, such as质量指标表,阶段门禁表,岗位职责表,问题分级表,接口联调检查表,数据质量检查表,风险预防表,交付文档清单,验收映射表. Each table should help prove `完全满足且优于项目需求`.
-- For scoring chapters, first read the target score and scoring language. When the evaluator expects `优于`, provide evidence through finer process control, fuller risk prevention, clearer acceptance linkage, and stronger专项措施 rather than restating the tender text.
-- For common chapters such as质量管理,组织实施,验收交付, and运维服务, adapt them to the project. For example, a quality management chapter should include quality goals, indicators, responsibilities, issue handling, evaluation, rectification, incentives/penalties, lifecycle quality gates, platform-specific quality controls, data middle-platform quality controls, interface joint-debugging controls, data quality controls, trial-run controls, quality meetings, process forms, risk prevention, document consistency controls, purchaser collaboration, and acceptance tracking.
+- For platform software projects, write project-specific special-topic plans instead of generic software engineering. Cover relevant boundaries such as生产服务平台,流通服务平台,交易服务平台,数据中台,AI能力中心,电子合同,质量追溯,接口联调,数据迁移,主数据管理,业务连续性,演示功能. For each special topic, state quality risks, control focus, inspection method, and output results.
+- Make tables evaluative, not decorative. Use tables only when they support scoring or implementation control, such as 质量指标表, 阶段门禁表,岗位职责表,问题分级表,接口联调检查表,数据质量检查表,风险预防表,交付文档清单,验收映射表. Each table should help prove `完全满足且优于项目需求`.
+- For scoring chapters, first read the target score and scoring language. When the evaluator expects `优于`, provide evidence through finer process control, fuller risk prevention, clearer acceptance linkage, and stronger special-topic measures rather than restating the tender text.
+- For common chapters such as 质量管理, 组织实施, 验收交付, and 运维服务, adapt them to the project. For example, a quality management chapter should include quality goals, indicators, responsibilities, issue handling, evaluation, rectification, incentives/penalties, lifecycle quality gates, platform-specific quality controls, data middle-platform quality controls, interface joint-debugging controls, data quality controls, trial-run controls, quality meetings, process forms, risk prevention, document consistency controls, purchaser collaboration, and acceptance tracking.
 - Do not leave formal-chapter draft traces: `本章自查`, `待确认`, `TODO`, `公司名称`, `项目名称：填写`, `如有证据再补`, or similar wording. For unavailable personnel, certificates, performance cases, software copyrights, authorizations, or manufacturer evidence, reference formal bid sections or attachments, such as `详见本投标文件《项目组织实施方案》及《本项目管理人员及服务人员名单》`.
 
 ## Output Standards
@@ -136,7 +141,7 @@ After each formal chapter, review and revise before moving on:
 - Identify unsupported claims and either remove them, tie them to evidence, or reference the formal attachment/chapter where evidence is provided.
 - Remove draft traces, placeholders, internal review wording, and fabricated evidence.
 - Check that the chapter fits this project rather than a generic template, including business scenes, platform boundaries, data/interface/control details, and purchaser collaboration.
-- Check that each minimum-level formal正文 section has at least 3-5 substantive paragraphs unless `goods-mode`, a tender form, or a fixed response table justifies shorter treatment.
+- Check that each minimum-level formal section has at least 3-5 substantive paragraphs unless `goods-mode`, a tender form, or a fixed response table justifies shorter treatment.
 - Confirm every major commitment has a verifiable output: ledger, checklist, meeting minutes, test report, trial-run record, migration record, issue record, acceptance mapping, or delivery document.
 - Check consistency with other chapters for scope, schedule, roles, deliverables, service commitments, and acceptance criteria.
 - Judge whether the length and density match the project amount, complexity, scoring competitiveness, page-budget baseline, and target thickness of the full bid.
@@ -145,5 +150,5 @@ After each formal chapter, review and revise before moving on:
 
 - "Use $tender-bid-writer to analyze this tender package and produce the requirement ledger."
 - "Use $tender-bid-writer to create a technical proposal outline and chapter briefs."
-- "Use $tender-bid-writer to draft the implementation方案 and run a compliance review."
+- "Use $tender-bid-writer to draft the implementation plan and run a compliance review."
 - "Use $tender-bid-writer to merge these chapters, simulate expert review, and create a final delivery checklist."
