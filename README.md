@@ -1,6 +1,6 @@
 # Tender-skills
 
-面向投标/售前方案编制的可移植 AI skill。核心 skill 名称为 `tender-bid-writer`，用于让 Codex、OpenClaw、Hermes 等 agent 从招标文件中抽取需求、生成投标方案框架、编写章节、合稿质检、模拟专家评审并输出交付清单。
+面向投标/售前方案编制的可移植 AI skill。核心 skill 名称为 `tender-bid-writer`，用于让 Codex、OpenClaw、Hermes 等 agent 从招标文件中抽取需求、生成投标方案框架、编写章节、合稿质检、模拟专家评审并输出交付清单；配套的 `cn-government-procurement-bid-format` 专门处理政府采购投标文件格式、固定表格、签章与提交检查。
 
 流程将“需求抽取 -> 章节 brief -> 人工确认 -> 逐章编写 -> 合稿 -> 质检 -> 多专家评审 -> 多轮修订 -> 最终交付”固化为一个可复用的 skill。
 
@@ -18,6 +18,10 @@ skills/
       platform-compatibility.md
     scripts/
       bid_quality_check.py
+  cn-government-procurement-bid-format/
+    SKILL.md
+    agents/
+      openai.yaml
 ```
 
 - `SKILL.md`：skill 主入口，定义触发场景和执行流程。
@@ -26,6 +30,8 @@ skills/
 - `references/checklists.md`：需求台账、章节 brief、质检、专家评审模板。
 - `references/platform-compatibility.md`：Codex、OpenClaw、Hermes 适配说明。
 - `scripts/bid_quality_check.py`：可选的本地质检脚本。
+- `cn-government-procurement-bid-format/SKILL.md`：政府采购投标文件格式与编制规范；只在招标文件未明确时提供默认版式，明确要求始终优先。
+- `cn-government-procurement-bid-format/agents/openai.yaml`：格式专项 skill 的 UI 元数据。
 
 ## GitHub 同步约定
 
@@ -39,6 +45,7 @@ skills/
 使用这个 skill 处理以下任务：
 
 - 分析招标文件、评分办法、技术规范、商务条款、资格要求。
+- 解析投标文件组成、官方响应表格、默认排版、页码目录、签字盖章、电子/纸质提交和最终 Word/PDF 格式风险。
 - 接到外包/代写标书时，先审招标文件，输出对客户的标书框架、资料清单、评分点响应关系和风险反馈。
 - 在编写前判断项目属于 `goods-mode`、`software-platform-mode`、`hybrid-goods-software-mode` 或 `service-mode`。
 - 将采购需求拆解到三级：一级需求域/系统边界，二级功能或服务事项，三级最小响应单元。
@@ -58,6 +65,11 @@ skills/
 - 最小正式正文小节通常不少于 `3-5 段`。货物标参数响应、固定格式表、符合性声明或招标要求短答除外。每段应有机制、场景、执行细节、表单记录、风险控制或验收支撑，不能只换说法重复标题。
 - 表格必须服务评审和落地，例如需求响应矩阵、接口联调检查表、数据质量检查表、风险预防表、交付文档清单、验收映射表。
 - 正式章节不得出现 `TODO`、`待确认`、`公司名称`、`项目名称：填写`、`如有证据再补` 等内部草稿痕迹。
+- 格式规则必须分层记录为招标文件/平台强制、原生模板、默认建议或待核实；招标文件没有明确要求时才使用默认格式，不能把“小四宋体”、A4、胶装、逐页盖章等行业习惯冒充强制要求。
+
+### 格式专项 skill 的调用
+
+只做投标文件格式、响应表、签章或提交检查时，可直接调用 `$cn-government-procurement-bid-format`。使用 `$tender-bid-writer` 进行完整审标或编标时，遇到上述内容应同步采用该专项 skill 的规则。两者均遵循同一优先级：适用法律和平台强制规则、最新招标文件及澄清更正、招标文件原生模板，最后才是默认建议。
 
 ## 外包标书前置审标流程
 
@@ -274,23 +286,25 @@ skills/
 可以直接把下面这句话发给支持读写本地文件的 agent：
 
 ```text
-请从 https://github.com/podcctv/Tender-skills 获取投标 skill，并将 skills/tender-bid-writer 安装到当前工具可发现的 skills 目录中；安装后用 $tender-bid-writer 作为调用名称。
+请从 https://github.com/podcctv/Tender-skills 获取投标 skills，并将 skills/tender-bid-writer 和 skills/cn-government-procurement-bid-format 安装到当前工具可发现的 skills 目录中；安装后分别用 $tender-bid-writer 和 $cn-government-procurement-bid-format 作为调用名称。
 ```
 
 ### 方式一：放入 Codex skills 目录
 
-将 `skills/tender-bid-writer` 复制到 Codex 可发现的 skills 目录。
+将 `skills/tender-bid-writer` 和 `skills/cn-government-procurement-bid-format` 复制到 Codex 可发现的 skills 目录。
 
 Windows 常见路径：
 
 ```powershell
 Copy-Item -Recurse ".\skills\tender-bid-writer" "$env:USERPROFILE\.codex\skills\tender-bid-writer"
+Copy-Item -Recurse ".\skills\cn-government-procurement-bid-format" "$env:USERPROFILE\.codex\skills\cn-government-procurement-bid-format"
 ```
 
 macOS / Linux 常见路径：
 
 ```bash
 cp -R ./skills/tender-bid-writer ~/.codex/skills/tender-bid-writer
+cp -R ./skills/cn-government-procurement-bid-format ~/.codex/skills/cn-government-procurement-bid-format
 ```
 
 然后在 Codex 中使用：

@@ -1,6 +1,6 @@
 ---
 name: tender-bid-writer
-description: End-to-end tender and bid proposal workflow for Chinese government, enterprise, and integration projects. Use when Codex/OpenClaw/Hermes needs to analyze bidding documents; handle outsourced/commissioned bid-writing intake with a two-file first-round package (`资料清单（项目名称）.docx` for client communication plus `标书组织说明（项目名称）.md` for the writer); review an existing/current response file for missing content, blank fields, evidence gaps, signature/seal/upload risks, and client supplement requests; classify the bid as goods-mode, software-platform-mode, hybrid-goods-software-mode, or service-mode; extract scoring criteria, qualification requirements, technical specifications, and business clauses; build a MECE proposal outline and chapter briefs; draft evaluator-ready, low-AI-flavor bid chapters with mode-appropriate thickness; merge and quality-check HTML/Markdown/DOCX outputs; simulate multi-expert bid review; iterate revisions; and prepare final delivery checklists for tender submissions.
+description: End-to-end tender and bid proposal workflow for Chinese government, enterprise, and integration projects. Use when Codex/OpenClaw/Hermes needs to analyze bidding documents; parse tender-native response formats; apply default Word/PDF layout only when the tender is silent; handle outsourced/commissioned bid-writing intake with a two-file first-round package (`资料清单（项目名称）.docx` for client communication plus `标书组织说明（项目名称）.md` for the writer); review an existing/current response file for missing content, blank fields, evidence gaps, signature/seal/upload risks, and client supplement requests; classify the bid as goods-mode, software-platform-mode, hybrid-goods-software-mode, or service-mode; extract scoring criteria, qualification requirements, technical specifications, and business clauses; build a MECE proposal outline and chapter briefs; draft evaluator-ready, low-AI-flavor bid chapters with mode-appropriate thickness; merge and quality-check HTML/Markdown/DOCX outputs; simulate multi-expert bid review; iterate revisions; and prepare final delivery checklists for tender submissions.
 ---
 
 # Tender Bid Writer
@@ -9,11 +9,25 @@ description: End-to-end tender and bid proposal workflow for Chinese government,
 
 Treat the tender document as the source of truth. Do not invent qualifications, certifications, past projects, prices, delivery dates, or manufacturer commitments. In internal ledgers and review notes, mark unknowns as `待确认` and ask for evidence when a claim affects compliance or scoring. In formal proposal chapters, never leave draft placeholders or internal notes; cite other formal chapters or attachments for unprovided evidence instead of fabricating it.
 
+## Format and Submission Precedence
+
+Use `cn-government-procurement-bid-format` as the companion capability whenever the task involves tender file composition, fixed response forms, page layout, tables, pagination, signatures/seals, electronic or paper submission, PDF generation, or final format review. The companion skill may also be invoked independently for a format-only task.
+
+Apply format rules in this order:
+
+1. Applicable law and mandatory transaction-platform rules.
+2. The latest tender/采购 document, clarification, correction, and Q&A notice.
+3. The tender instructions, official response templates, annexes, and required file composition.
+4. The companion skill's defaults, only for matters the current tender does not specify.
+
+Before using any default, record whether the rule is `招标文件强制`, `平台强制`, `原生模板`, `默认建议`, or `待核实`. An explicit tender requirement always overrides a default recommendation, including A4, fonts, margins, line spacing, page numbering, section order, binding, page seals, file splitting, PDF settings, and upload/signature method. Do not turn an industry habit into a rejection condition. When the tender is silent, use the companion skill's conservative, readable defaults and keep official forms recognizable rather than redesigning them.
+
 ## Workflow
 
 1. **Intake and workspace setup**
    - Locate tender files, annexes, drawings, templates, clarification notices, and mandatory response forms.
    - Identify the procurement object, project value, procurement method, scoring method, required response forms, hard page/format limits, and evidence attachments before drafting.
+   - Determine the submission mode (`electronic-bid`, `paper-bid`, or `dual-bid`) and create a format ledger covering file composition, official forms, page/format limits, naming, signing/sealing, encryption, upload, binding, and delivery. Read `cn-government-procurement-bid-format` before applying any default.
    - If the task is an outsourced/commissioned bid-writing job, or the user has only received the tender package without bidder evidence materials, enter the outsourced pre-audit workflow before drafting.
    - Create a working structure if none exists:
      - `00_source/` original tender files and extracted text
@@ -86,6 +100,7 @@ Treat the tender document as the source of truth. Do not invent qualifications, 
 9. **Iterate to final**
    - Repeat review and revision until the user accepts the risk level or the score target is reached.
    - Prepare a delivery checklist: final files, response forms, evidence attachments, unresolved confirmations, signature/seal items, and submission format.
+   - In the final format review, verify every explicit tender/platform requirement first, then verify only the default rules that fill silent gaps. Do not add unrequired page seals, bindings, scans, or file splits merely because they are common practice.
    - For Word finalization, use `投标文档格式.docx` as the master template when available. Generate every major chapter as a separate DOCX under `分章节定稿` with sortable filenames such as `06-数据迁移与一致性校验-DG格式版.docx`. Use Heading 1-9 as semantic carriers for `TB_01`-`TB_09`, use `TB表格` for table-cell text when present, and do not manually type heading numbering like `第一章` or `1.1`.
 
 ## Resource Loading
@@ -97,6 +112,7 @@ Treat the tender document as the source of truth. Do not invent qualifications, 
 - Read `references/human-bid-prose.md` when drafting or revising formal technical方案, service方案, implementation, quality, acceptance, operations, or food/goods/service履约 chapters and the user complains about AI flavor, template language, or流水账.
 - Read `references/chapter-structure-docx-output.md` when planning chapter structure, deciding which chapters/topics must be thick, drafting leaf-level正文, adding tables/flowcharts, applying `投标文档格式.docx`, or producing per-chapter DOCX files.
 - Read `references/platform-compatibility.md` when installing or adapting this skill for Codex, OpenClaw, or Hermes.
+- Read the sibling skill `../cn-government-procurement-bid-format/SKILL.md` when the task includes format parsing, Word/PDF layout, official response forms, signatures/seals, paper/electronic submission, or final format QC. If the sibling skill is installed separately, invoke `$cn-government-procurement-bid-format` directly.
 - Use `scripts/bid_quality_check.py` for local proposal checks when draft files exist.
 
 ## Bid Type Modes

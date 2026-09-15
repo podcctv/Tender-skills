@@ -1,0 +1,4 @@
+interface:
+  display_name: "政府采购投标文件格式"
+  short_description: "按招标文件优先原则处理投标文件格式、表格、签章与提交"
+  default_prompt: "Use $cn-government-procurement-bid-format to parse the tender's required file composition, official forms, layout, pagination, signatures/seals, electronic or paper submission, and final Word/PDF checks. If the tender is silent, apply conservative defaults; whenever the tender or platform is explicit, follow it exactly and label unresolved items as 待核实."
