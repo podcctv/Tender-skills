@@ -16,6 +16,7 @@ skills/
       workflow.md
       checklists.md
       platform-compatibility.md
+      openbidkit-derived-controls.md
     scripts/
       bid_quality_check.py
   cn-government-procurement-bid-format/
@@ -29,6 +30,7 @@ skills/
 - `references/workflow.md`：投标全流程、阶段门和推荐产物结构。
 - `references/checklists.md`：需求台账、章节 brief、质检、专家评审模板。
 - `references/platform-compatibility.md`：Codex、OpenClaw、Hermes 适配说明。
+- `references/openbidkit-derived-controls.md`：从 OpenBidKit_Yibiao 提炼的分阶段任务、来源/证据台账、全局事实、可恢复执行、三轮电子文件风险检查和静默版式预设；只作增强控制，不覆盖招标文件优先原则。
 - `scripts/bid_quality_check.py`：可选的本地质检脚本。
 - `cn-government-procurement-bid-format/SKILL.md`：政府采购投标文件格式与编制规范；只在招标文件未明确时提供默认版式，明确要求始终优先。
 - `cn-government-procurement-bid-format/agents/openai.yaml`：格式专项 skill 的 UI 元数据。
@@ -54,6 +56,10 @@ skills/
 - 按厚标书标准逐章编写 HTML、Markdown 或 DOCX 目标稿件。
 - 合稿后进行占位符、漏项、证据缺口和一致性检查。
 - 模拟合规、技术、评分、交付、商务/法务等多专家评审。
+- 对长标书使用稳定任务 ID、输入哈希、日志、局部结果和断点恢复，避免中断后从头开始或覆盖成功结果。
+- 对全局事实、知识库复用和跨章节一致性实行证据门禁；只允许 `evidence-backed`、`placeholder`、`omit`，不允许 `fabricate`。
+- 对电子投标文件执行“范围划分—证据核对—结论收敛”三轮否决风险检查，并将纸质装订、密封、现场动作单独列出。
+- 在招标文件静默时提供标准、正式装订、宽表格等条件型版式兜底；紧凑评审和图文方案只作用户明确选择后的参考，明确要求始终优先。
 
 ## 核心写作标准
 

@@ -1,6 +1,6 @@
 ---
 name: tender-bid-writer
-description: End-to-end tender and bid proposal workflow for Chinese government, enterprise, and integration projects. Use when Codex/OpenClaw/Hermes needs to analyze bidding documents; parse tender-native response formats; apply default Word/PDF layout only when the tender is silent; handle outsourced/commissioned bid-writing intake with a two-file first-round package (`资料清单（项目名称）.docx` for client communication plus `标书组织说明（项目名称）.md` for the writer); review an existing/current response file for missing content, blank fields, evidence gaps, signature/seal/upload risks, and client supplement requests; classify the bid as goods-mode, software-platform-mode, hybrid-goods-software-mode, or service-mode; extract scoring criteria, qualification requirements, technical specifications, and business clauses; build a MECE proposal outline and chapter briefs; draft evaluator-ready, low-AI-flavor bid chapters with mode-appropriate thickness; merge and quality-check HTML/Markdown/DOCX outputs; simulate multi-expert bid review; iterate revisions; and prepare final delivery checklists for tender submissions.
+description: End-to-end Chinese tender and bid workflow for government, enterprise, and integration projects. Analyze tender-native requirements and response formats; keep source, evidence, and global-fact ledgers; run staged resumable analysis; classify bid modes; build mapped outlines and chapter briefs; draft evidence-backed chapters; check cross-chapter consistency, duplicate/typo/logic warnings, electronic invalid-bid risks, Word/PDF formatting, signatures, upload readiness, and final delivery. Apply defaults only when the tender, platform, clarification, or native template is silent; never fabricate bidder facts.
 ---
 
 # Tender Bid Writer
@@ -8,6 +8,12 @@ description: End-to-end tender and bid proposal workflow for Chinese government,
 ## Operating Rule
 
 Treat the tender document as the source of truth. Do not invent qualifications, certifications, past projects, prices, delivery dates, or manufacturer commitments. In internal ledgers and review notes, mark unknowns as `待确认` and ask for evidence when a claim affects compliance or scoring. In formal proposal chapters, never leave draft placeholders or internal notes; cite other formal chapters or attachments for unprovided evidence instead of fabricating it.
+
+## Analysis Tasks and Human Gates
+
+For long or high-risk tenders, use a lightweight task registry rather than an untracked chain of prompts. Each task should record `task_id`, `purpose`, `required`, `inputs`, `output_type`, `status`, `gate`, and `evidence_scope`. Use `pending`, `running`, `blocked`, `needs_review`, `success`, `error`, and `skipped` as execution states; `success` means the task ran, not that every extracted fact is verified. A blocked or review-required task must not be silently closed because later chapters were generated.
+
+Require human confirmation at three points: (A) freeze the effective source set after checking the tender, latest clarification/correction, platform rules, and native templates; (B) approve bidder/project facts before they enter formal正文; and (C) review any final electronic invalid-bid/rejection risk marked as evidence-backed. Keep these gates in the existing ledgers and QC records; do not introduce a product-style database or UI state machine merely to imitate another application.
 
 ## Format and Submission Precedence
 
@@ -29,6 +35,8 @@ Before using any default, record whether the rule is `招标文件强制`, `平�
    - Identify the procurement object, project value, procurement method, scoring method, required response forms, hard page/format limits, and evidence attachments before drafting.
    - Determine the submission mode (`electronic-bid`, `paper-bid`, or `dual-bid`) and create a format ledger covering file composition, official forms, page/format limits, naming, signing/sealing, encryption, upload, binding, and delivery. Read `cn-government-procurement-bid-format` before applying any default.
    - If the task is an outsourced/commissioned bid-writing job, or the user has only received the tender package without bidder evidence materials, enter the outsourced pre-audit workflow before drafting.
+   - Register every source file before analysis: preserve the original, create a normalized/extracted copy only as a derivative, record `source_id`, content hash, parser/readability status, and page/section/table anchors. Missing, unreadable, or conflicting source material must become `待核实`, not an invented conclusion.
+   - Create a staged task registry for the analysis work. Use stable task IDs, explicit `pending/running/blocked/needs_review/success/error/skipped` status, structured outputs, input hashes, logs, timestamps, and retry reasons. Preserve successful partial results and resume from the latest safe stage after interruption; a completed execution is not the same as verified evidence.
    - Create a working structure if none exists:
      - `00_source/` original tender files and extracted text
      - `01_requirements/` scoring, qualifications, technical parameters, business clauses, deliverables, forms
@@ -66,6 +74,8 @@ Before using any default, record whether the rule is `招标文件强制`, `平�
    - Preserve exact source anchors where possible: file name, page, section, table row, or clause number.
    - Classify each requirement as `mandatory`, `scored`, `contractual`, `format`, or `evidence`.
    - Stop and report conflicts, missing annexes, unreadable scans, ambiguous scoring language, or hard pass/fail risks.
+   - Maintain a source/evidence ledger for every claim that may enter formal正文. A tender requirement, bidder-provided fact, verified public fact, and pending item must have separate statuses and allowed scopes. `待核实` means unresolved; it does not mean satisfied or absent.
+   - Keep source authority and supersession explicit. If a later valid clarification changes a field, retain the old source as historical but mark it superseded; do not let a cached extraction or lower-priority default continue to control the response.
 
 5. **Outline and chapter briefs**
    - Build a MECE outline that maps every scored and mandatory requirement to exactly one primary response location.
@@ -74,6 +84,7 @@ Before using any default, record whether the rule is `招标文件强制`, `平�
    - Treat data consistency checking, interface joint debugging, old/new system parallel running, cutover drills, business rollback, and transition-period operations as thick excellence topics when relevant. Expand them to deeper 5-6 level structures before drafting, not as afterthoughts.
    - Create an overall page budget before drafting. Unless the tender document imposes a strict page limit, estimate the full proposal thickness by project value, scoring method, and selected mode. Use about 1 proposal page per RMB 10,000 as a practical baseline for software-platform and complex hybrid bids; apply goods-mode and service-mode adjustments from the mode rules.
    - Ask for human confirmation before full drafting when the outline controls compliance or a large document.
+   - Treat outline selection as a gate: map every mandatory, scored, and contract-critical requirement to one primary response location, evidence dependency, and acceptance output before full drafting. Record excluded optional chapters and the reason for exclusion.
 
 6. **Draft chapters**
    - Draft one chapter at a time from the approved brief.
@@ -84,11 +95,16 @@ Before using any default, record whether the rule is `招标文件强制`, `平�
    - Every major chapter should include at least one useful process/flow diagram and one scoring- or acceptance-oriented table unless the tender format prohibits it or the chapter is only a short compliance/form chapter. Use tables for responsibility matrices, risk ledgers, acceptance mapping, interface lists, data checks, issue grading, and delivery materials, not decoration.
    - For outsourced bids, re-check that the source material for each claim has been received, mapped, and accepted before turning it into formal正文. Unreceived evidence should remain in the material request list, not be converted into a definitive commitment.
    - After each chapter, run a local self-check: requirement coverage, forbidden placeholders, evidence gaps, consistency with prior chapters, evaluator readability, low-AI-flavor detail, and验收可追溯性.
+   - Maintain a project-scoped global-facts ledger for repeated names, dates, amounts, models, personnel, commitments, and service terms. Only `evidence-backed`, `placeholder` (internal tracking only), and `omit` are allowed. Never use a `fabricate` mode. When a fact changes, invalidate affected chapter caches and rerun consistency checks before delivery.
+   - Reuse knowledge-base material only through source block IDs, hashes, project scope, validity, and allowed claim scope. Historical proposals may contribute structure or methods, but never silently transfer client facts, cases, qualifications, people, prices, models, or commitments across projects.
 
 7. **Merge and quality check**
    - Merge chapters only after chapter-level checks pass.
    - Run deterministic checks with `scripts/bid_quality_check.py` when files are available.
    - Produce a QC report listing blockers, warnings, traceability gaps, mode-mismatch risks, and recommended fixes.
+   - Run four QC layers in order: requirement/evidence coverage; global-fact and cross-chapter consistency; duplicate/typo/logic warnings; and submission readiness. Text similarity or an automated warning is not by itself a rejection conclusion.
+   - Run the electronic-file invalid-bid check in three rounds: define the electronic scope, verify each risk against explicit source and bid evidence, then keep only evidence-backed risks. Keep physical/onsite actions such as binding, sealing, carrying originals, and onsite sign-in in a separate submission-action checklist. Treat unreadable scans or images as `待核实`, not as proof of absence.
+   - Distinguish existence from compliance: a directory item, attachment title, table row, page clue, or image placeholder may support `present_unverified`, but cannot prove that a certificate is valid, a parameter is met, or a signature/seal is complete. Only an explicit tender basis plus locatable bid-file evidence may become a substantiated electronic risk.
    - When the user provides an already-drafted response/proposal file and asks what is missing, what must still be requested, or whether the current version can be submitted, use the current-response review workflow before polishing. Compare the current file against the tender-required forms, qualification items, price fields, evidence attachments, signatures/seals, scan clarity, and submission rules. Output a current-version review report and client supplement list instead of rewriting the whole bid.
 
 8. **Expert review simulation**
@@ -111,6 +127,7 @@ Before using any default, record whether the rule is `招标文件强制`, `平�
 - Read `references/current-response-review.md` when reviewing an existing/current response file, checking missing content, blank fields, attached evidence, signatures/seals, upload readiness, or client supplement requests.
 - Read `references/human-bid-prose.md` when drafting or revising formal technical方案, service方案, implementation, quality, acceptance, operations, or food/goods/service履约 chapters and the user complains about AI flavor, template language, or流水账.
 - Read `references/chapter-structure-docx-output.md` when planning chapter structure, deciding which chapters/topics must be thick, drafting leaf-level正文, adding tables/flowcharts, applying `投标文档格式.docx`, or producing per-chapter DOCX files.
+- Read `references/openbidkit-derived-controls.md` when running staged analysis, registering sources/evidence, maintaining global facts, resuming interrupted work, reusing knowledge-base material, checking electronic invalid-bid risks, or choosing a silent-format layout profile. This reference is advisory and never overrides the tender/platform/native-template precedence above.
 - Read `references/platform-compatibility.md` when installing or adapting this skill for Codex, OpenClaw, or Hermes.
 - Read the sibling skill `../cn-government-procurement-bid-format/SKILL.md` when the task includes format parsing, Word/PDF layout, official response forms, signatures/seals, paper/electronic submission, or final format QC. If the sibling skill is installed separately, invoke `$cn-government-procurement-bid-format` directly.
 - Use `scripts/bid_quality_check.py` for local proposal checks when draft files exist.
